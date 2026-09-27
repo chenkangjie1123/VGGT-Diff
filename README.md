@@ -27,6 +27,7 @@ Dake Zhong<sup>3</sup>&nbsp;&nbsp; Guorui Song<sup>3</sup>&nbsp;&nbsp; Yu Zhang<
 
 - [ ] Release half-resolution and full-resolution VGGT-Diff checkpoints.
 - [ ] Release the full-resolution checkpoint for continuous camera-trajectory generation.
+- [ ] Release the image-to-novel-view synthesis model that does not require input camera poses.
 
 ## Overview
 
