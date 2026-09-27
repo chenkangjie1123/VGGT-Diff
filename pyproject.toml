@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vggt-diff"
+version = "0.1.0"
+description = "Visual Geometry Meets Diffusion for Sparse-View Novel View Synthesis"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+dependencies = [
+    "accelerate>=1.2",
+    "einops>=0.8",
+    "ftfy>=6.2",
+    "huggingface-hub>=0.27",
+    "imageio[ffmpeg]>=2.36",
+    "modelscope>=1.22",
+    "numpy<2",
+    "opencv-python>=4.10",
+    "Pillow>=10.4",
+    "protobuf>=5",
+    "safetensors>=0.5",
+    "sentencepiece>=0.2",
+    "torch>=2.3",
+    "torchvision>=0.18",
+    "transformers>=4.47",
+    "tqdm>=4.67",
+]
+
+[project.optional-dependencies]
+train = ["deepspeed>=0.15"]
+dev = ["pytest>=8", "ruff>=0.8"]
+
+[tool.setuptools.packages.find]
+include = ["vggtdiff*", "diffsynth*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"

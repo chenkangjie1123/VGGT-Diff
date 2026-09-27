@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.DS_Store
+.idea/
+.vscode/
+.venv/
+checkpoints/
+outputs/
+wandb/
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+*.log

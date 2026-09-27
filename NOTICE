@@ -1,0 +1,7 @@
+VGGT-Diff
+Copyright 2026 VGGT-Diff Authors
+
+This product includes adapted components from DiffSynth-Studio and
+FrameCrafter, distributed under the Apache License 2.0. It also depends on
+Wan2.1 and VGGT-Omega. The corresponding code, model weights, and assets remain
+subject to their respective licenses and terms.
