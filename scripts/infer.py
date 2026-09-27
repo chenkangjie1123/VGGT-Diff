@@ -24,6 +24,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--steps", type=int, default=50)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--fps", type=int, default=12)
+    parser.add_argument(
+        "--vram-limit-gib",
+        type=float,
+        default=0.0,
+        help="Persistent CUDA weight budget; use -1 to disable CPU offload",
+    )
     return parser.parse_args()
 
 
@@ -45,6 +51,7 @@ def main() -> None:
         checkpoint=args.checkpoint,
         omega_checkpoint=args.omega_checkpoint,
         base_model_dir=args.base_model_dir,
+        vram_limit_gib=None if args.vram_limit_gib < 0 else args.vram_limit_gib,
     )
     predictions = model.generate(
         images,

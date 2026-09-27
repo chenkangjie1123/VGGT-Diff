@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import glob
+import importlib
 from pathlib import Path
 
 import numpy as np
@@ -8,7 +9,9 @@ import torch
 import torch.nn as nn
 from PIL import Image
 
+from diffsynth.configs import VRAM_MANAGEMENT_MODULE_MAPS
 from diffsynth.core import ModelConfig, load_state_dict
+from diffsynth.core.vram import enable_vram_management
 from diffsynth.models.omega_condition import OmegaGridAdapter, expand_patch_embedding
 from diffsynth.pipelines.wan_video import WanVideoPipeline
 
@@ -134,6 +137,54 @@ def configure_dit(model) -> None:
     model.in_dim += 32
 
 
+def _module_map(module: nn.Module) -> dict[type, type]:
+    class_path = f"{module.__class__.__module__}.{module.__class__.__name__}"
+    configured = VRAM_MANAGEMENT_MODULE_MAPS.get(class_path)
+    if configured is None:
+        raise KeyError(f"No VRAM-management map for {class_path}")
+
+    def resolve(path: str):
+        module_name, symbol_name = path.rsplit(".", 1)
+        return getattr(importlib.import_module(module_name), symbol_name)
+
+    return {resolve(source): resolve(target) for source, target in configured.items()}
+
+
+def _enable_cpu_offload(
+    pipe,
+    vram_limit_gib: float,
+    device: str,
+    dtype: torch.dtype,
+) -> None:
+    config = {
+        "offload_dtype": dtype,
+        "offload_device": "cpu",
+        "onload_dtype": dtype,
+        "onload_device": "cpu",
+        "preparing_dtype": dtype,
+        "preparing_device": device,
+        "computation_dtype": dtype,
+        "computation_device": device,
+    }
+    for name in ("dit", "vae", "image_encoder", "text_encoder"):
+        module = getattr(pipe, name, None)
+        if module is None:
+            continue
+        setattr(
+            pipe,
+            name,
+            enable_vram_management(
+                module,
+                _module_map(module),
+                vram_config=config,
+                vram_limit=vram_limit_gib,
+            ),
+        )
+    pipe.device = torch.device(device)
+    pipe.device_type = pipe.device.type
+    pipe.vram_management_enabled = True
+
+
 class VGGTDiff:
     def __init__(
         self,
@@ -142,14 +193,16 @@ class VGGTDiff:
         base_model_dir: str | None = None,
         device: str = "cuda",
         dtype: torch.dtype = torch.bfloat16,
+        vram_limit_gib: float | None = 0.0,
     ) -> None:
         if not torch.cuda.is_available():
             raise RuntimeError("VGGT-Diff inference requires a CUDA-compatible device")
         validate_checkpoint(checkpoint)
         configs, tokenizer = _model_configs(base_model_dir)
+        load_device = "cpu" if vram_limit_gib is not None else device
         self.pipe = WanVideoPipeline.from_pretrained(
             torch_dtype=dtype,
-            device=device,
+            device=load_device,
             model_configs=configs,
             tokenizer_config=tokenizer,
             redirect_common_files=False,
@@ -168,6 +221,8 @@ class VGGTDiff:
                 "Checkpoint architecture mismatch: "
                 f"missing={missing[:8]}, unexpected={unexpected[:8]}"
             )
+        if vram_limit_gib is not None:
+            _enable_cpu_offload(self.pipe, vram_limit_gib, device, dtype)
         self.omega = OmegaRuntime(
             checkpoint_path=omega_checkpoint,
             device=torch.device(device),
