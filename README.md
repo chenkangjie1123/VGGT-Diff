@@ -17,8 +17,6 @@ Dake Zhong<sup>3</sup>&nbsp;&nbsp; Guorui Song<sup>3</sup>&nbsp;&nbsp; Yu Zhang<
 
 <img src="assets/vggtdiff_demo_20cases.gif" alt="VGGT-Diff results on twenty evaluation trajectories" width="100%">
 
-[Watch the project demo](assets/vggtdiff_demo.mp4)
-
 </div>
 
 ## Updates
