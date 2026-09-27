@@ -4,23 +4,37 @@
 
 ### Visual Geometry Meets Diffusion for Sparse-View Novel View Synthesis
 
-Kangjie Chen · Xiangyu Li · Dongbin Zhang · Chaodao Zheng · Shijia Chen · Jinhao Deng · Hongbin Lin · Choo Sin Wai · Minqi Wang · Minghao Yang · Dake Zhong · Guorui Song · Yu Zhang · Xianming Liu · Boyang Wang
+Kangjie Chen<sup>1*</sup>&nbsp;&nbsp; Xiangyu Li<sup>1*</sup>&nbsp;&nbsp; Dongbin Zhang<sup>1</sup>&nbsp;&nbsp; Chaodao Zheng<sup>1</sup>&nbsp;&nbsp; Shijia Chen<sup>1</sup><br>
+Jinhao Deng<sup>1</sup>&nbsp;&nbsp; Hongbin Lin<sup>2</sup>&nbsp;&nbsp; Choo Sin Wai<sup>3</sup>&nbsp;&nbsp; Minqi Wang<sup>2</sup>&nbsp;&nbsp; Minghao Yang<sup>3</sup><br>
+Dake Zhong<sup>3</sup>&nbsp;&nbsp; Guorui Song<sup>3</sup>&nbsp;&nbsp; Yu Zhang<sup>1</sup>&nbsp;&nbsp; Xianming Liu<sup>1</sup>&nbsp;&nbsp; Boyang Wang<sup>1&dagger;</sup>
 
-[![Project](https://img.shields.io/badge/Project-VGGT--Diff-176b86)](https://github.com/chenkangjie1123/VGGT-Diff)
-[![Paper](https://img.shields.io/badge/Paper-Coming_Soon-8f236f)](#todo)
-[![License](https://img.shields.io/badge/License-Apache--2.0-555555)](LICENSE)
+<sup>1</sup> XPeng Motors&nbsp;&nbsp;&nbsp; <sup>2</sup> The Chinese University of Hong Kong&nbsp;&nbsp;&nbsp; <sup>3</sup> Tsinghua University
 
-<video src="assets/vggtdiff_demo.mp4" poster="assets/demo_poster.jpg" controls muted loop playsinline width="100%"></video>
+[![Project Page](https://img.shields.io/badge/Project-Page-176b86)](https://chenkangjie1123.github.io/VGGT-Diff/)
+[![Paper](https://img.shields.io/badge/Paper-PDF-8f236f)](https://chenkangjie1123.github.io/VGGT-Diff/VGGT-Diff.pdf)
+![arXiv](https://img.shields.io/badge/arXiv-Coming_Soon-b31b1b)
+![Hugging Face](https://img.shields.io/badge/Hugging_Face-Coming_Soon-f1b928)
 
-[Download the lightweight project demo](assets/vggtdiff_demo.mp4)
+<img src="assets/vggtdiff_demo_20cases.gif" alt="VGGT-Diff results on twenty evaluation trajectories" width="100%">
+
+[Watch the project demo](assets/vggtdiff_demo.mp4)
 
 </div>
+
+## Updates
+
+- **September 27, 2026:** We released the VGGT-Diff [paper](https://chenkangjie1123.github.io/VGGT-Diff/VGGT-Diff.pdf), [project page](https://chenkangjie1123.github.io/VGGT-Diff/), and code.
+
+## TODO
+
+- [ ] Release half-resolution and full-resolution VGGT-Diff checkpoints.
+- [ ] Release the full-resolution checkpoint for continuous camera-trajectory generation.
 
 ## Overview
 
 VGGT-Diff combines geometry-routed visual evidence from VGGT-Omega with a pretrained video diffusion prior. Given six sparse-view images, it jointly synthesizes a camera-controlled novel-view sequence while preserving observed structure and completing unseen content.
 
-This release contains the main training and inference path, the ordered four-pose Plucker conditioning used for long sequences, and a ready-to-run garden example. Model checkpoints are not stored in this repository and will be released separately.
+This release contains the main training and inference paths, six-view visual conditioning, per-frame camera-trajectory conditioning, and a ready-to-run garden example. Model checkpoints are not stored in this repository and will be released separately.
 
 ## Installation
 
@@ -61,7 +75,7 @@ my_scene/
 └── trajectory.json
 ```
 
-`trajectory.json` contains `source_w2c`, `target_w2c`, `source_intrinsics`, and `target_intrinsics`. Extrinsics use world-to-camera matrices in OpenCV convention; intrinsics are 3×3 pixel-space matrices at the source image resolution.
+`trajectory.json` contains `source_w2c`, `target_w2c`, `source_intrinsics`, and `target_intrinsics`. Extrinsics use world-to-camera matrices in OpenCV convention; intrinsics are 3x3 pixel-space matrices at the source image resolution.
 
 ```bash
 python scripts/infer.py \
@@ -101,23 +115,18 @@ accelerate launch scripts/train.py \
   --output outputs/training_run
 ```
 
-The default training protocol uses six source views, 80 contiguous targets, causal 4:1 target VAE compression, ordered four-pose Plucker packing, source-anchor camera normalization, and the point-track residual consistency loss.
+The default training protocol uses six source views, 80 contiguous targets, causal 4:1 target VAE compression, temporally packed per-frame Plucker conditioning, source-anchor camera normalization, and the point-track residual consistency loss.
 
-## Checkpoint format
+## Citation
 
-VGGT-Diff checkpoints are safetensors files containing the complete fine-tuned DiT, including:
-
-- `patch_embedding.*`
-- `omega_adapter.*`
-- `temporal_plucker_adapter.weight`
-
-The loader validates these architecture-defining tensors before allocating the base model, so incompatible checkpoints fail early with a clear error.
-
-## TODO
-
-- [ ] Release half-resolution and full-resolution VGGT-Diff checkpoints.
-- [ ] Publish Hugging Face model cards and direct download commands.
-- [ ] Add quantitative evaluation scripts and benchmark manifests.
+```bibtex
+@misc{chen2026vggtdiff,
+  title={Visual Geometry Meets Diffusion for Sparse-View Novel View Synthesis},
+  author={Chen, Kangjie and Li, Xiangyu and Zhang, Dongbin and Zheng, Chaodao and Chen, Shijia and Deng, Jinhao and Lin, Hongbin and Wai, Choo Sin and Wang, Minqi and Yang, Minghao and Zhong, Dake and Song, Guorui and Zhang, Yu and Liu, Xianming and Wang, Boyang},
+  year={2026},
+  url={https://chenkangjie1123.github.io/VGGT-Diff/}
+}
+```
 
 ## Acknowledgements
 
@@ -125,4 +134,4 @@ This project builds on [Wan2.1](https://github.com/Wan-Video/Wan2.1), [VGGT-Omeg
 
 ## License
 
-The code is released under the [Apache License 2.0](LICENSE). Model weights and third-party assets may be subject to their own terms.
+VGGT-Diff is released under the [VGGT-Diff Research License](LICENSE) for non-commercial research and educational use. Third-party components and dependencies remain subject to their respective licenses and terms; see [NOTICE](NOTICE).

@@ -5,3 +5,6 @@ This product includes adapted components from DiffSynth-Studio and
 FrameCrafter, distributed under the Apache License 2.0. It also depends on
 Wan2.1 and VGGT-Omega. The corresponding code, model weights, and assets remain
 subject to their respective licenses and terms.
+
+A copy of the Apache License 2.0 is provided in
+THIRD_PARTY_LICENSES/Apache-2.0.txt.
