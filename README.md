@@ -4,8 +4,7 @@
 
 ### Visual Geometry Meets Diffusion for Sparse-View Novel View Synthesis
 
-Kangjie Chen · Xiangyu Li · Dongbin Zhang · Chaodao Zheng · Shijia Chen · Jinhao Deng · Hongbin Lin · Choo Sin Wai<br>
-Minqi Wang · Minghao Yang · Dake Zhong · Guorui Song · Yu Zhang · Xianming Liu · Boyang Wang
+Kangjie Chen · Xiangyu Li · Dongbin Zhang · Chaodao Zheng · Shijia Chen · Jinhao Deng · Hongbin Lin · Choo Sin Wai · Minqi Wang · Minghao Yang · Dake Zhong · Guorui Song · Yu Zhang · Xianming Liu · Boyang Wang
 
 [![Project](https://img.shields.io/badge/Project-VGGT--Diff-176b86)](https://github.com/chenkangjie1123/VGGT-Diff)
 [![Paper](https://img.shields.io/badge/Paper-Coming_Soon-8f236f)](#todo)
