@@ -122,7 +122,7 @@ The default training protocol uses six source views, 80 contiguous targets, caus
 ```bibtex
 @misc{chen2026vggtdiff,
   title={Visual Geometry Meets Diffusion for Sparse-View Novel View Synthesis},
-  author={Chen, Kangjie and Li, Xiangyu and Zhang, Dongbin and Zheng, Chaodao and Chen, Shijia and Deng, Jinhao and Lin, Hongbin and Wai, Choo Sin and Wang, Minqi and Yang, Minghao and Zhong, Dake and Song, Guorui and Zhang, Yu and Liu, Xianming and Wang, Boyang},
+  author={Chen, Kangjie and Li, Xiangyu and Zhang, Dongbin and Zheng, Chaoda and Chen, Shijia and Deng, Jinhao and Lin, Hongbin and Wai, Choo Sin and Wang, Minqi and Yang, Minghao and Zhong, Dake and Song, Guorui and Zhang, Yu and Liu, Xianming and Wang, Boyang},
   year={2026},
   url={https://chenkangjie1123.github.io/VGGT-Diff/}
 }
