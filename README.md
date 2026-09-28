@@ -4,7 +4,7 @@
 
 ### Visual Geometry Meets Diffusion for Sparse-View Novel View Synthesis
 
-Kangjie Chen<sup>1*</sup>&nbsp;&nbsp; Xiangyu Li<sup>1*</sup>&nbsp;&nbsp; Dongbin Zhang<sup>1</sup>&nbsp;&nbsp; Chaodao Zheng<sup>1</sup>&nbsp;&nbsp; Shijia Chen<sup>1</sup><br>
+Kangjie Chen<sup>1*</sup>&nbsp;&nbsp; Xiangyu Li<sup>1*</sup>&nbsp;&nbsp; Dongbin Zhang<sup>1</sup>&nbsp;&nbsp; Chaoda Zheng<sup>1</sup>&nbsp;&nbsp; Shijia Chen<sup>1</sup><br>
 Jinhao Deng<sup>1</sup>&nbsp;&nbsp; Hongbin Lin<sup>2</sup>&nbsp;&nbsp; Choo Sin Wai<sup>3</sup>&nbsp;&nbsp; Minqi Wang<sup>2</sup>&nbsp;&nbsp; Minghao Yang<sup>3</sup><br>
 Dake Zhong<sup>3</sup>&nbsp;&nbsp; Guorui Song<sup>3</sup>&nbsp;&nbsp; Yu Zhang<sup>1</sup>&nbsp;&nbsp; Xianming Liu<sup>1</sup>&nbsp;&nbsp; Boyang Wang<sup>1&dagger;</sup>
 
