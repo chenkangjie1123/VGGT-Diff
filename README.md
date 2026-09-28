@@ -4,9 +4,9 @@
 
 ### Visual Geometry Meets Diffusion for Sparse-View Novel View Synthesis
 
-Kangjie Chen<sup>1*</sup>&nbsp;&nbsp; Xiangyu Li<sup>1*</sup>&nbsp;&nbsp; Dongbin Zhang<sup>1</sup>&nbsp;&nbsp; Chaoda Zheng<sup>1</sup>&nbsp;&nbsp; Shijia Chen<sup>1</sup><br>
-Jinhao Deng<sup>1</sup>&nbsp;&nbsp; Hongbin Lin<sup>2</sup>&nbsp;&nbsp; Choo Sin Wai<sup>3</sup>&nbsp;&nbsp; Minqi Wang<sup>2</sup>&nbsp;&nbsp; Minghao Yang<sup>3</sup><br>
-Dake Zhong<sup>3</sup>&nbsp;&nbsp; Guorui Song<sup>3</sup>&nbsp;&nbsp; Yu Zhang<sup>1</sup>&nbsp;&nbsp; Xianming Liu<sup>1</sup>&nbsp;&nbsp; Boyang Wang<sup>1&dagger;</sup>
+[Kangjie Chen](https://github.com/chenkangjie1123)<sup>1*</sup>&nbsp;&nbsp; [Xiangyu Li](https://github.com/chenkangjie1123/VGGT-Diff)<sup>1*</sup>&nbsp;&nbsp; [Dongbin Zhang](https://scholar.google.com/citations?user=U1cdnYUAAAAJ&hl=zh-CN)<sup>1</sup>&nbsp;&nbsp; [Chaoda Zheng](https://scholar.google.com/citations?user=3YuWG1QAAAAJ&hl=en)<sup>1</sup>&nbsp;&nbsp; [Shijia Chen](https://github.com/chenkangjie1123/VGGT-Diff)<sup>1</sup><br>
+[Jinhao Deng](https://scholar.google.com/citations?user=4lD_AkgAAAAJ&hl=en)<sup>1</sup>&nbsp;&nbsp; [Hongbin Lin](https://scholar.google.com/citations?user=LqX1k5QAAAAJ&hl=en)<sup>2</sup>&nbsp;&nbsp; [Choo Sin Wai](https://scholar.google.com/citations?hl=zh-CN&user=XM2n3scAAAAJ)<sup>3</sup>&nbsp;&nbsp; [Minqi Wang](https://github.com/chenkangjie1123/VGGT-Diff)<sup>2</sup>&nbsp;&nbsp; [Minghao Yang](https://github.com/chenkangjie1123/VGGT-Diff)<sup>3</sup><br>
+[Dake Zhong](https://github.com/chenkangjie1123/VGGT-Diff)<sup>3</sup>&nbsp;&nbsp; [Guorui Song](https://scholar.google.com/citations?user=qOOnZAoAAAAJ&hl=en)<sup>3</sup>&nbsp;&nbsp; [Yu Zhang](https://github.com/chenkangjie1123/VGGT-Diff)<sup>1</sup>&nbsp;&nbsp; [Xianming Liu](https://scholar.google.com/citations?user=697UEEIAAAAJ&hl=en)<sup>1</sup>&nbsp;&nbsp; [Boyang Wang](https://github.com/chenkangjie1123/VGGT-Diff)<sup>1&dagger;</sup>
 
 <sup>1</sup> XPeng Motors&nbsp;&nbsp;&nbsp; <sup>2</sup> The Chinese University of Hong Kong&nbsp;&nbsp;&nbsp; <sup>3</sup> Tsinghua University
 
