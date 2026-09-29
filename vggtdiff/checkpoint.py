@@ -9,11 +9,15 @@ EXPECTED_TENSORS = {
     "patch_embedding.weight": (5120, 452, 1, 2, 2),
     "omega_adapter.proj.weight": (32, 2048),
     "omega_adapter.norm.weight": (2048,),
+}
+TEMPORAL_TENSORS = {
     "temporal_plucker_adapter.weight": (384, 1536, 1, 1, 1),
 }
 
 
-def validate_checkpoint(path: str | Path) -> None:
+def validate_checkpoint(
+    path: str | Path, require_temporal_adapter: bool = True
+) -> None:
     path = Path(path)
     if not path.is_file():
         raise FileNotFoundError(
@@ -22,7 +26,10 @@ def validate_checkpoint(path: str | Path) -> None:
         )
     with safe_open(path, framework="numpy") as handle:
         keys = set(handle.keys())
-        for name, expected_shape in EXPECTED_TENSORS.items():
+        expected_tensors = dict(EXPECTED_TENSORS)
+        if require_temporal_adapter:
+            expected_tensors.update(TEMPORAL_TENSORS)
+        for name, expected_shape in expected_tensors.items():
             if name not in keys:
                 raise ValueError(f"Checkpoint is missing required tensor: {name}")
             shape = tuple(handle.get_slice(name).get_shape())

@@ -124,35 +124,40 @@ python scripts/prepare_omega_cache.py \
 
 ### Training recipes
 
-VGGT-Diff uses the same frozen Wan2.1 Video VAE in both training recipes, but the latent layout is different. The corresponding checkpoints are separate model families and should not be treated as interchangeable.
+Both recipes freeze the Wan2.1 VAE and VGGT-Omega while training the DiT and conditioning modules. Their latent layouts differ, so their checkpoints are separate model families.
 
 | | Paper NVS model | Continuous-trajectory model |
 | --- | --- | --- |
-| Inputs | Six source views and a variable set of target views | Six source views and 80 ordered, contiguous target frames |
-| Source VAE encoding | Each source image is encoded independently | Each source image is encoded independently |
-| Target VAE encoding | Every target image is encoded independently | The complete target sequence is encoded through the causal temporal VAE |
-| DiT view-time slots | `6 + N`, one slot per physical view | `6 + 21 = 27` slots for an 80-frame target trajectory |
-| Camera conditioning | One camera and Plucker map per target slot | Four ordered target Plucker maps are packed into each compressed temporal slot |
-| Intended use | Quantitative NVS and joint multi-target prediction | Smooth, camera-controlled long-trajectory video generation |
+| Targets | Variable `N`, treated as a set of views | 80 ordered, contiguous frames |
+| VAE | Every source and target is encoded independently | Sources are independent; targets use the causal temporal VAE |
+| DiT slots | `6 + N` | `6 + 21` for 80 targets |
+| Plucker conditioning | One pose per target slot | Four ordered poses packed per compressed slot |
 
 #### Paper NVS model
 
-The quantitative model in the [paper](https://arxiv.org/abs/2609.33253) uses an independent-view latent layout. Each source image and each ground-truth target image is passed through the frozen VAE separately, so six sources and `N` targets produce exactly `6 + N` latent slots. Target slots are jointly denoised by the DiT, but they are treated as an unordered set of views rather than a temporally compressed video. Each slot remains aligned one-to-one with its image, camera, Plucker map, and routed VGGT-Omega geometry condition.
-
-The paper trains on the 980-scene DL3DV-1K subset with a 6-to-variable-`N` curriculum. The 147-epoch half-resolution stage at `192x336` progresses through `{1, 2, 4}` -> `{2, 4, 8}` -> `{4, 8, 12}` -> `{4, 8, 12, 16}` targets. The 60-epoch full-resolution stage at `480x832` follows `{4, 8}` -> `{4, 8, 12}` -> `{4, 8, 12, 16}`. The Wan DiT learning rate is `1e-5` at half resolution and `5e-6` at full resolution, while newly introduced conditioning modules use `1e-4`. The VAE and VGGT-Omega remain frozen. Point-track residual consistency is applied in latent space with weight `0.1`, alongside geometry-condition dropout.
-
-This independent-view protocol is the one used for all quantitative results reported in the paper. It does not use temporal VAE compression.
-
-#### Continuous 80-frame trajectories
-
-The long-trajectory recipe preserves independent encoding for the six source images, but jointly encodes the ordered target sequence through the frozen VAE's causal temporal path. An 80-frame target is padded by repeating its final frame once, producing an 81-frame sequence and 21 causal target latent slots. The repeated decoded frame is discarded. This reduces the DiT sequence from 86 physical views to 27 latent slots.
-
-Camera conditions do not pass through the VAE. To preserve every requested pose, target Plucker maps are grouped according to the causal windows `[0]`, `[1, 2, 3, 4]`, ..., `[77, 78, 79, 79]`. The four ordered maps in each window are channel-packed and projected by the temporal Plucker adapter before entering the DiT.
-
-Launch continuous-trajectory fine-tuning with Accelerate:
+This is the independent-view protocol used for the quantitative results in the [paper](https://arxiv.org/abs/2609.33253). Six sources and `N` targets produce `6 + N` one-to-one image, camera, Plucker, and geometry slots without temporal VAE compression.
 
 ```bash
 accelerate launch scripts/train.py \
+  --training-mode nvs \
+  --dataset-root /path/to/dataset_root \
+  --omega-cache /path/to/omega_cache \
+  --target-frames 1 2 4 \
+  --height 192 --width 336 \
+  --backbone-lr 1e-5 \
+  --condition-lr 1e-4 \
+  --output outputs/nvs_training_run
+```
+
+The paper progresses the half-resolution target curriculum through `{1,2,4}` -> `{2,4,8}` -> `{4,8,12}` -> `{4,8,12,16}`, then trains at `480x832` with `{4,8}` -> `{4,8,12}` -> `{4,8,12,16}` and a `5e-6` backbone learning rate. Resume the previous stage and change `--target-frames`, resolution, and learning rate accordingly.
+
+#### Continuous 80-frame trajectories
+
+An 80-frame target is padded to 81 frames and causally compressed into 21 target slots. Camera conditions bypass the VAE; the four ordered Plucker maps in each causal window are packed and projected by the temporal Plucker adapter.
+
+```bash
+accelerate launch scripts/train.py \
+  --training-mode trajectory \
   --dataset-root /path/to/dataset_root \
   --omega-cache /path/to/omega_cache \
   --resume /path/to/vggtdiff_trajectory.safetensors \
@@ -162,7 +167,7 @@ accelerate launch scripts/train.py \
   --output outputs/trajectory_training_run
 ```
 
-The original continuous-trajectory adaptation described in the paper uses `192x336`; the command above selects the full-resolution `480x832` continuation. Both variants use source-anchor camera normalization, temporally packed per-frame Plucker conditioning, and point-track residual consistency.
+The paper's original trajectory adaptation uses `192x336`; the command above selects the full-resolution continuation. Both recipes use source-anchor camera normalization and point-track residual consistency.
 
 ## Citation
 

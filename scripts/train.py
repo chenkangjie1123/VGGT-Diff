@@ -25,9 +25,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--base-model-dir", default=None)
     parser.add_argument("--resume", default=None)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--training-mode", choices=("nvs", "trajectory"), default="trajectory"
+    )
     parser.add_argument("--height", type=int, default=480)
     parser.add_argument("--width", type=int, default=832)
-    parser.add_argument("--target-frames", type=int, default=80)
+    parser.add_argument("--target-frames", type=int, nargs="+", default=None)
     parser.add_argument("--max-scenes", type=int, default=0)
     parser.add_argument("--repeat", type=int, default=1)
     parser.add_argument("--workers", type=int, default=1)
@@ -46,8 +49,16 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
+    target_frames = args.target_frames
+    if target_frames is None:
+        target_frames = [1, 2, 4] if args.training_mode == "nvs" else [80]
+    if args.training_mode == "trajectory" and len(target_frames) != 1:
+        raise ValueError("Trajectory training requires exactly one target-frame count")
     if args.resume is not None:
-        validate_checkpoint(args.resume)
+        validate_checkpoint(
+            args.resume,
+            require_temporal_adapter=args.training_mode == "trajectory",
+        )
     if torch.cuda.is_available():
         torch.cuda.set_device(int(os.environ.get("LOCAL_RANK", "0")))
     accelerator = Accelerator(
@@ -59,7 +70,8 @@ def main() -> None:
         omega_cache=args.omega_cache,
         height=args.height,
         width=args.width,
-        target_frames=args.target_frames,
+        target_frames=target_frames,
+        sampling_mode=args.training_mode,
         repeat=args.repeat,
         seed=args.seed,
         max_scenes=args.max_scenes,
@@ -74,6 +86,7 @@ def main() -> None:
         checkpoint=args.resume,
         base_model_dir=args.base_model_dir,
         device=accelerator.device,
+        training_mode=args.training_mode,
     )
     groups = model.optimizer_parameter_groups(
         args.backbone_lr, args.condition_lr, args.plucker_lr

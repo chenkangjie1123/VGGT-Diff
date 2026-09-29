@@ -75,7 +75,7 @@ def main() -> None:
         transforms = json.loads(transforms_path.read_text())
         files = image_files(scene)
         frame_count = min(len(files), len(transforms["frames"]))
-        if frame_count < 86:
+        if frame_count < 7:
             continue
         output_dir = args.cache_root / scene.name
         output_dir.mkdir(parents=True, exist_ok=True)

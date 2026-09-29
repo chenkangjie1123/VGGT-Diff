@@ -16,6 +16,7 @@ class VGGTDiffTrainingModule(DiffusionTrainingModule):
         checkpoint: str | None,
         base_model_dir: str | None,
         device: torch.device,
+        training_mode: str = "trajectory",
         condition_drop_probability: float = 0.10,
         condition_weak_probability: float = 0.20,
         condition_weak_min: float = 0.20,
@@ -33,7 +34,7 @@ class VGGTDiffTrainingModule(DiffusionTrainingModule):
             tokenizer_config=tokenizer,
             redirect_common_files=False,
         )
-        configure_dit(self.pipe.dit)
+        configure_dit(self.pipe.dit, training_mode=training_mode)
         self.switch_pipe_to_training_mode(self.pipe, trainable_models="dit")
         if checkpoint is not None:
             state = load_state_dict(
@@ -52,6 +53,7 @@ class VGGTDiffTrainingModule(DiffusionTrainingModule):
                     f"missing={missing[:8]}, unexpected={unexpected[:8]}"
                 )
         self.condition_drop_probability = float(condition_drop_probability)
+        self.training_mode = training_mode
         self.condition_weak_probability = float(condition_weak_probability)
         self.condition_weak_min = float(condition_weak_min)
         self.condition_weak_max = float(condition_weak_max)
@@ -79,22 +81,28 @@ class VGGTDiffTrainingModule(DiffusionTrainingModule):
                 condition.append(parameter)
             else:
                 backbone.append(parameter)
-        return [
+        groups = [
             {"params": backbone, "lr": float(backbone_learning_rate)},
             {"params": condition, "lr": float(condition_learning_rate)},
             {"params": plucker, "lr": float(plucker_learning_rate)},
         ]
+        return [group for group in groups if group["params"]]
 
     def _pipeline_inputs(self, data: dict):
         source_frames = len(data["input_images"])
         physical_targets = len(data["target_images"]) - source_frames
-        latent_targets = 1 + (physical_targets - 1 + 3) // 4
-        condition_indices = list(range(0, physical_targets, 4))
-        if condition_indices[-1] != physical_targets - 1:
-            condition_indices.append(physical_targets - 1)
-        raymap = _pack_temporal_raymaps(
-            data["raymap"], source_frames, physical_targets, 4
-        )
+        if self.training_mode == "trajectory":
+            latent_targets = 1 + (physical_targets - 1 + 3) // 4
+            condition_indices = list(range(0, physical_targets, 4))
+            if condition_indices[-1] != physical_targets - 1:
+                condition_indices.append(physical_targets - 1)
+            raymap = _pack_temporal_raymaps(
+                data["raymap"], source_frames, physical_targets, 4
+            )
+        else:
+            latent_targets = physical_targets
+            condition_indices = list(range(physical_targets))
+            raymap = data["raymap"]
         shared = {
             "input_image": data["input_images"],
             "input_video": data["target_images"],

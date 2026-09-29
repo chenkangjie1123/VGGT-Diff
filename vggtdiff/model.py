@@ -115,18 +115,21 @@ def _replace_patch_embedding(model, input_channels: int) -> None:
     model.in_dim = input_channels
 
 
-def configure_dit(model) -> None:
+def configure_dit(model, training_mode: str = "trajectory") -> None:
+    if training_mode not in {"nvs", "trajectory"}:
+        raise ValueError(f"Unsupported training mode: {training_mode}")
     model.individual_encoding = True
-    model.temporal_target_compression = 4
-    model.temporal_plucker_packing = True
-    model.temporal_plucker_adapter = nn.Conv3d(
-        1536,
-        384,
-        kernel_size=1,
-        bias=False,
-        device=model.patch_embedding.weight.device,
-        dtype=model.patch_embedding.weight.dtype,
-    )
+    model.temporal_target_compression = 4 if training_mode == "trajectory" else 1
+    model.temporal_plucker_packing = training_mode == "trajectory"
+    if training_mode == "trajectory":
+        model.temporal_plucker_adapter = nn.Conv3d(
+            1536,
+            384,
+            kernel_size=1,
+            bias=False,
+            device=model.patch_embedding.weight.device,
+            dtype=model.patch_embedding.weight.dtype,
+        )
     _replace_patch_embedding(model, 420)
     model.omega_adapter = OmegaGridAdapter(
         token_dim=2048,

@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from pathlib import Path
 
-import numpy as np
 import torch
 from PIL import Image
 from torch.utils.data import Dataset
@@ -58,6 +58,32 @@ def _resize(image: Image.Image, height: int, width: int) -> Image.Image:
     return image.crop((left, top, left + width, top + height))
 
 
+def _sample_nvs_targets(
+    candidates: list[int], target_count: int, generator: torch.Generator
+) -> list[int]:
+    if len(candidates) < target_count:
+        return []
+    ordered = target_count >= 8 or bool(
+        torch.rand((), generator=generator).item() < 0.5
+    )
+    if not ordered:
+        indices = torch.randperm(len(candidates), generator=generator)[:target_count]
+        return [candidates[int(index)] for index in indices]
+    span_size = int(
+        torch.randint(
+            target_count, len(candidates) + 1, (1,), generator=generator
+        ).item()
+    )
+    start = int(
+        torch.randint(
+            len(candidates) - span_size + 1, (1,), generator=generator
+        ).item()
+    )
+    span = candidates[start : start + span_size]
+    positions = torch.linspace(0, len(span) - 1, target_count).round().long()
+    return [span[int(position)] for position in positions]
+
+
 class SceneDataset(Dataset):
     def __init__(
         self,
@@ -65,7 +91,8 @@ class SceneDataset(Dataset):
         omega_cache: str,
         height: int,
         width: int,
-        target_frames: int = 80,
+        target_frames: int | list[int] = 80,
+        sampling_mode: str = "trajectory",
         repeat: int = 1,
         seed: int = 0,
         max_scenes: int = 0,
@@ -74,7 +101,15 @@ class SceneDataset(Dataset):
         self.cache_root = Path(omega_cache)
         self.height = int(height)
         self.width = int(width)
-        self.target_frames = int(target_frames)
+        counts = [target_frames] if isinstance(target_frames, int) else target_frames
+        self.target_frames = sorted({int(value) for value in counts})
+        if not self.target_frames or self.target_frames[0] < 1:
+            raise ValueError("target_frames must contain positive integers")
+        if sampling_mode not in {"nvs", "trajectory"}:
+            raise ValueError(f"Unsupported sampling mode: {sampling_mode}")
+        if sampling_mode == "trajectory" and len(self.target_frames) != 1:
+            raise ValueError("Trajectory sampling requires one target-frame count")
+        self.sampling_mode = sampling_mode
         self.repeat = int(repeat)
         self.seed = int(seed)
         self.current_epoch = 0
@@ -126,35 +161,66 @@ class SceneDataset(Dataset):
             ]
             source_set = set(source_ids)
 
-            runs = []
-            run = []
-            for frame_id in range(frame_count):
-                if frame_id in source_set:
-                    if run:
-                        runs.append(run)
-                        run = []
-                    continue
-                run.append(frame_id)
-            if run:
-                runs.append(run)
-            valid_runs = [run for run in runs if len(run) >= self.target_frames]
-            if not valid_runs:
-                continue
-
             generator = torch.Generator().manual_seed(
                 self.seed + self.current_epoch * len(self) + sample_index
             )
-            selected_run = valid_runs[
-                int(torch.randint(len(valid_runs), (1,), generator=generator))
-            ]
-            start = int(
-                torch.randint(
-                    len(selected_run) - self.target_frames + 1,
-                    (1,),
-                    generator=generator,
+            target_count = self.target_frames[
+                int(
+                    torch.randint(
+                        len(self.target_frames), (1,), generator=generator
+                    ).item()
                 )
-            )
-            target_ids = selected_run[start : start + self.target_frames]
+            ]
+
+            if self.sampling_mode == "nvs":
+                candidates = [
+                    frame_id
+                    for frame_id in range(frame_count)
+                    if frame_id not in source_set
+                ]
+                if bundle_index >= math.ceil(0.8 * self.num_bundles):
+                    local_candidates = [
+                        frame_id
+                        for frame_id in candidates
+                        if min(source_ids) <= frame_id <= max(source_ids)
+                    ]
+                    if len(local_candidates) >= target_count:
+                        candidates = local_candidates
+                target_ids = _sample_nvs_targets(
+                    candidates, target_count, generator
+                )
+                if not target_ids:
+                    continue
+            else:
+                runs = []
+                run = []
+                for frame_id in range(frame_count):
+                    if frame_id in source_set:
+                        if run:
+                            runs.append(run)
+                            run = []
+                        continue
+                    run.append(frame_id)
+                if run:
+                    runs.append(run)
+                valid_runs = [run for run in runs if len(run) >= target_count]
+                if not valid_runs:
+                    continue
+                selected_run = valid_runs[
+                    int(
+                        torch.randint(
+                            len(valid_runs), (1,), generator=generator
+                        ).item()
+                    )
+                ]
+                start = int(
+                    torch.randint(
+                        len(selected_run) - target_count + 1,
+                        (1,),
+                        generator=generator,
+                    ).item()
+                )
+                target_ids = selected_run[start : start + target_count]
             frame_ids = source_ids + target_ids
             images = []
             for frame_id in frame_ids:
@@ -187,5 +253,5 @@ class SceneDataset(Dataset):
                 "prompt": "",
             }
         raise ValueError(
-            f"No scene contains {self.target_frames} contiguous target frames"
+            f"No scene supports target counts {self.target_frames}"
         )
