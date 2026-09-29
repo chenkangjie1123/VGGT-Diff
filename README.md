@@ -13,7 +13,7 @@
 [![Project Page](https://img.shields.io/badge/Project-Page-176b86)](https://chenkangjie1123.github.io/VGGT-Diff/)
 [![Paper](https://img.shields.io/badge/Paper-PDF-8f236f)](https://chenkangjie1123.github.io/VGGT-Diff/VGGT-Diff.pdf)
 [![arXiv](https://img.shields.io/badge/arXiv-2609.33253-b31b1b)](https://arxiv.org/abs/2609.33253)
-![Hugging Face](https://img.shields.io/badge/Hugging_Face-Coming_Soon-f1b928)
+[![Hugging Face Paper](https://img.shields.io/badge/Hugging_Face-Paper-f1b928)](https://huggingface.co/papers/2609.33253)
 
 <img src="assets/vggtdiff_demo_20cases.gif" alt="VGGT-Diff results on twenty evaluation trajectories" width="100%">
 
