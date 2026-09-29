@@ -18,6 +18,7 @@ from diffsynth.pipelines.wan_video import WanVideoPipeline
 from .camera import normalize_source_anchor, plucker_rays, resize_images_and_intrinsics
 from .checkpoint import validate_checkpoint
 from .omega import OmegaRuntime
+from .pose_free import default_viewpoint_trajectory, load_target_trajectory
 
 
 def _model_configs(base_model_dir: str | None):
@@ -299,3 +300,55 @@ class VGGTDiff:
             omega_target_intrinsics=move(omega["omega_target_intrinsics"]),
         )
         return generated[-target_count:]
+
+    @torch.inference_mode()
+    def generate_pose_free(
+        self,
+        source_images: list[Image.Image],
+        trajectory_json: str | Path | None = None,
+        frames: int = 80,
+        route_order: tuple[int, ...] = (0, 1, 2, 3, 4, 5),
+        height: int = 480,
+        width: int = 832,
+        steps: int = 50,
+        seed: int = 42,
+    ) -> tuple[list[Image.Image], dict]:
+        """Infer source cameras with Omega, then generate a target-view video."""
+        source_w2c, source_intrinsics = self.omega.estimate_cameras(source_images)
+        if trajectory_json is None:
+            target_w2c, target_intrinsics = default_viewpoint_trajectory(
+                source_w2c, source_intrinsics, frames=frames, route_order=route_order
+            )
+            trajectory_origin = "interpolated_source_viewpoints"
+        else:
+            target_w2c, target_intrinsics = load_target_trajectory(
+                trajectory_json, source_w2c, source_intrinsics, frames=frames
+            )
+            trajectory_origin = "user_supplied"
+        predictions = self.generate(
+            source_images,
+            np.concatenate((source_w2c, target_w2c)),
+            np.concatenate((source_intrinsics, target_intrinsics)),
+            height=height,
+            width=width,
+            steps=steps,
+            seed=seed,
+        )
+        camera_data = {
+            "camera_convention": "OpenCV world-to-camera",
+            "coordinate_system": "VGGT-Omega-estimated world",
+            "source_pose_origin": "six RGB images estimated by VGGT-Omega",
+            "source_image_size": list(source_images[0].size),
+            "trajectory_origin": trajectory_origin,
+            "route_order": list(route_order) if trajectory_json is None else None,
+            "source_w2c": source_w2c.tolist(),
+            "source_intrinsics": source_intrinsics.tolist(),
+            "target_w2c": target_w2c.tolist(),
+            "target_intrinsics": target_intrinsics.tolist(),
+            "height": height,
+            "width": width,
+            "frames": frames,
+            "steps": steps,
+            "seed": seed,
+        }
+        return predictions, camera_data

@@ -12,7 +12,7 @@
 
 [![Project Page](https://img.shields.io/badge/Project-Page-176b86)](https://chenkangjie1123.github.io/VGGT-Diff/)
 [![Paper](https://img.shields.io/badge/Paper-PDF-8f236f)](https://chenkangjie1123.github.io/VGGT-Diff/VGGT-Diff.pdf)
-![arXiv](https://img.shields.io/badge/arXiv-Coming_Soon-b31b1b)
+[![arXiv](https://img.shields.io/badge/arXiv-2609.33253-b31b1b)](https://arxiv.org/abs/2609.33253)
 ![Hugging Face](https://img.shields.io/badge/Hugging_Face-Coming_Soon-f1b928)
 
 <img src="assets/vggtdiff_demo_20cases.gif" alt="VGGT-Diff results on twenty evaluation trajectories" width="100%">
@@ -21,13 +21,14 @@
 
 ## Updates
 
+- **September 29, 2026:** The VGGT-Diff paper is now available on [arXiv](https://arxiv.org/abs/2609.33253). We also released the pose-free inference pipeline for generating camera-controlled videos directly from six RGB images.
 - **September 27, 2026:** We released the VGGT-Diff [paper](https://chenkangjie1123.github.io/VGGT-Diff/VGGT-Diff.pdf), [project page](https://chenkangjie1123.github.io/VGGT-Diff/), and code.
 
 ## TODO
 
 - [ ] Release half-resolution and full-resolution VGGT-Diff checkpoints.
 - [ ] Release the full-resolution checkpoint for continuous camera-trajectory generation.
-- [ ] Release the image-to-novel-view synthesis model that does not require input camera poses.
+- [x] Release pose-free image-to-novel-view video inference from six RGB images.
 
 ## Overview
 
@@ -61,6 +62,22 @@ python scripts/infer.py \
 
 The generated frames and video are written to `outputs/garden/`. Full-resolution inference is enabled with `--height 480 --width 832`; the lower default resolution is convenient for a first run.
 The default inference path uses CPU offloading to minimize CUDA memory use. On a GPU with ample memory, set `--vram-limit-gib 64` to keep more weights resident, or `--vram-limit-gib -1` to disable offloading.
+
+### Inference from six RGB images without input poses
+
+The pose-free entry point estimates the six source cameras with VGGT-Omega, then generates 80 novel-view frames with VGGT-Diff. It defaults to 480p (832 × 480), 12 fps, and a route through source views 0 → 1 → 2 → 3 → 4 → 5. Name the six input images in their physical walking order. The route interpolates camera centers and orientations; it does not check for collisions with scene geometry.
+
+```bash
+python scripts/infer_pose_free.py \
+  --checkpoint /path/to/full_resolution_vggtdiff.safetensors \
+  --omega-checkpoint /path/to/vggt_omega_1b_512.pt \
+  --source-dir /path/to/six_rgb_images \
+  --output outputs/pose_free
+```
+
+The output contains `prediction.mp4`, `camera_trajectory.mp4`, a synchronized `prediction_with_trajectory.mp4`, all 80 PNG frames, and `cameras.json` with the estimated source cameras and the target path actually used. The camera view uses small antialiased frustums. No ground-truth poses or frames are read. You can reorder the default path with `--route-order 0 2 1 3 4 5`.
+
+To provide your own 80 target cameras, pass `--trajectory-json /path/to/targets.json`. Give exactly one of `target_w2c` (OpenCV world-to-camera matrices in the VGGT-Omega-estimated world saved in `cameras.json`) or `target_c2w_relative_to_source0` (camera-to-world matrices in the first source camera's coordinate frame). Both are arrays of 80 homogeneous 4 × 4 matrices. Optional `target_intrinsics` is an array of 80 pixel-space 3 × 3 matrices; if omitted, the median of the six estimated source intrinsics is used. The custom path should avoid scene collisions and keep a sensible distance from the observed views.
 
 ### Custom scenes
 
@@ -124,7 +141,9 @@ The default training protocol uses six source views, 80 contiguous targets, caus
   title={Visual Geometry Meets Diffusion for Sparse-View Novel View Synthesis},
   author={Chen, Kangjie and Li, Xiangyu and Zhang, Dongbin and Zheng, Chaoda and Chen, Shijia and Deng, Jinhao and Lin, Hongbin and Wai, Choo Sin and Wang, Minqi and Yang, Minghao and Zhong, Dake and Song, Guorui and Zhang, Yu and Liu, Xianming and Wang, Boyang},
   year={2026},
-  url={https://chenkangjie1123.github.io/VGGT-Diff/}
+  eprint={2609.33253},
+  archivePrefix={arXiv},
+  url={https://arxiv.org/abs/2609.33253}
 }
 ```
 

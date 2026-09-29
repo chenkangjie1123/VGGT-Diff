@@ -143,6 +143,62 @@ class OmegaRuntime(nn.Module):
         return torch.stack(tensors).unsqueeze(0).to(self.device, non_blocking=True)
 
     @torch.inference_mode()
+    def estimate_cameras(
+        self, images: list[Image.Image]
+    ) -> tuple[np.ndarray, np.ndarray]:
+        """Estimate OpenCV world-to-camera poses and original-pixel intrinsics from RGB."""
+        from vggt_omega.utils.load_fn import _crop_to_supported_aspect_ratio
+        from vggt_omega.utils.pose_enc import encoding_to_camera
+
+        if len(images) != 6:
+            raise ValueError("Exactly six source images are required")
+        if len({image.size for image in images}) != 1:
+            raise ValueError("All source images must have the same resolution")
+        tensors = self._preprocess(images)
+        with torch.autocast(device_type="cuda", dtype=torch.bfloat16):
+            layers, patch_start = self.model.aggregator(tensors)
+        with torch.autocast(device_type="cuda", enabled=False):
+            pose = self.model.camera_head(
+                [None if layer is None else layer.detach() for layer in layers],
+                patch_token_start=patch_start,
+            )
+            predicted_w2c, predicted_intrinsics = encoding_to_camera(
+                pose, tensors.shape[-2:]
+            )
+
+        w2c = np.repeat(np.eye(4, dtype=np.float32)[None], 6, axis=0)
+        w2c[:, :3, :] = predicted_w2c[0].float().cpu().numpy()
+        omega_intrinsics = predicted_intrinsics[0].float().cpu().numpy()
+        omega_height, omega_width = tensors.shape[-2:]
+        intrinsics = []
+        for index, image in enumerate(images):
+            width, height = image.size
+            cropped_width, cropped_height = _crop_to_supported_aspect_ratio(
+                image.convert("RGB")
+            ).size
+            left = (width - cropped_width) // 2
+            top = (height - cropped_height) // 2
+            to_original_pixels = np.array(
+                [
+                    [cropped_width / omega_width, 0, left],
+                    [0, cropped_height / omega_height, top],
+                    [0, 0, 1],
+                ],
+                dtype=np.float32,
+            )
+            intrinsics.append(to_original_pixels @ omega_intrinsics[index])
+        intrinsics = np.stack(intrinsics)
+        centers = np.linalg.inv(w2c)[:, :3, 3]
+        baseline = np.linalg.norm(centers[:, None] - centers[None], axis=-1)
+        if not np.isfinite(w2c).all() or not np.isfinite(intrinsics).all():
+            raise ValueError("VGGT-Omega returned non-finite cameras")
+        if np.median(baseline[np.triu_indices(6, 1)]) <= 1e-5:
+            raise ValueError("VGGT-Omega returned coincident camera centers")
+        if np.max(np.abs(np.linalg.det(w2c[:, :3, :3]) - 1)) > 1e-3:
+            raise ValueError("VGGT-Omega returned non-rigid camera rotations")
+        return w2c, intrinsics
+
+    @torch.inference_mode()
     def forward(
         self,
         images: list[Image.Image],
