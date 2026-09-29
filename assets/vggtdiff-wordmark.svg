@@ -1,28 +1,37 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 64" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 104" role="img" aria-labelledby="title desc">
   <title id="title">VGGT-Diff</title>
-  <desc id="desc">VGGT-Diff logo and wordmark.</desc>
+  <desc id="desc">VGGT-Diff wordmark with a camera trajectory integrated into the letter V.</desc>
   <defs>
-    <linearGradient id="bg" x1="7" y1="7" x2="58" y2="58" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#063d5d"/>
-      <stop offset=".48" stop-color="#187f9d"/>
-      <stop offset="1" stop-color="#9a286f"/>
+    <linearGradient id="trajectory" x1="10" y1="72" x2="118" y2="22" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#18a9bf"/>
+      <stop offset=".52" stop-color="#387fba"/>
+      <stop offset="1" stop-color="#a93679"/>
     </linearGradient>
-    <filter id="soft-shadow" x="-30%" y="-30%" width="160%" height="160%">
-      <feDropShadow dx="0" dy="1.4" stdDeviation="1.2" flood-color="#241129" flood-opacity=".32"/>
-    </filter>
     <style>
-      .wordmark { fill: #1f2328; }
-      @media (prefers-color-scheme: dark) { .wordmark { fill: #f0f6fc; } }
+      .ink { fill: #1f2328; }
+      .camera-body { fill: #ffffff; stroke: #1f2328; }
+      @media (prefers-color-scheme: dark) {
+        .ink { fill: #f0f6fc; }
+        .camera-body { fill: #0d1117; stroke: #f0f6fc; }
+      }
     </style>
   </defs>
-  <rect width="64" height="64" rx="11" fill="url(#bg)"/>
-  <circle cx="21" cy="30" r="18" fill="#65d6e6" opacity=".08"/>
-  <circle cx="44" cy="35" r="19" fill="#ef89c8" opacity=".07"/>
-  <g fill="#fff" filter="url(#soft-shadow)">
-    <text x="19" y="43" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="31" font-weight="800">V</text>
-    <text x="44" y="44" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="34" font-style="italic" font-weight="700">D</text>
+  <path class="ink" d="M2 8h27l29 67L87 8h27L71 98H45Z"/>
+  <path d="M10 72C29 72 38 56 53 46S80 24 111 28" fill="none" stroke="url(#trajectory)" stroke-width="4" stroke-linecap="round"/>
+  <g transform="translate(17 70) rotate(-10)">
+    <rect class="camera-body" x="-6" y="-5" width="12" height="10" rx="2" stroke-width="1.5"/>
+    <path d="M6-3 13-7V7L6 3Z" fill="url(#trajectory)"/>
   </g>
-  <path d="M27.8 32h7.1" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" opacity=".88"/>
-  <circle cx="31.4" cy="32" r="1.35" fill="#fff"/>
-  <text class="wordmark" x="82" y="45" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="38" font-weight="700">VGGT-Diff</text>
+  <g transform="translate(55 45) rotate(-24)">
+    <rect class="camera-body" x="-6" y="-5" width="12" height="10" rx="2" stroke-width="1.5"/>
+    <path d="M6-3 13-7V7L6 3Z" fill="url(#trajectory)"/>
+  </g>
+  <g transform="translate(105 28) rotate(8)">
+    <rect class="camera-body" x="-6" y="-5" width="12" height="10" rx="2" stroke-width="1.5"/>
+    <path d="M6-3 13-7V7L6 3Z" fill="url(#trajectory)"/>
+  </g>
+  <circle cx="119" cy="25" r="3.2" fill="#a93679" opacity=".85"/>
+  <circle cx="128" cy="21" r="2.1" fill="#a93679" opacity=".58"/>
+  <circle cx="136" cy="18" r="1.3" fill="#a93679" opacity=".34"/>
+  <text class="ink" x="106" y="83" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="78" font-weight="800">GGT-Diff</text>
 </svg>
