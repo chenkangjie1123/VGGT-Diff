@@ -1,6 +1,6 @@
 <div align="center">
 
-<h1 align="center"><img src="assets/vggtdiff-logo.svg" alt="VGGT-Diff logo" width="42" align="center"> VGGT-Diff</h1>
+<h1 align="center"><img src="assets/vggtdiff-wordmark.svg" alt="VGGT-Diff" height="50"></h1>
 
 ### Visual Geometry Meets Diffusion for Sparse-View Novel View Synthesis
 

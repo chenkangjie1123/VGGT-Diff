@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 64" role="img" aria-labelledby="title desc">
+  <title id="title">VGGT-Diff</title>
+  <desc id="desc">VGGT-Diff logo and wordmark.</desc>
+  <defs>
+    <linearGradient id="bg" x1="7" y1="7" x2="58" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#063d5d"/>
+      <stop offset=".48" stop-color="#187f9d"/>
+      <stop offset="1" stop-color="#9a286f"/>
+    </linearGradient>
+    <filter id="soft-shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="1.4" stdDeviation="1.2" flood-color="#241129" flood-opacity=".32"/>
+    </filter>
+    <style>
+      .wordmark { fill: #1f2328; }
+      @media (prefers-color-scheme: dark) { .wordmark { fill: #f0f6fc; } }
+    </style>
+  </defs>
+  <rect width="64" height="64" rx="11" fill="url(#bg)"/>
+  <circle cx="21" cy="30" r="18" fill="#65d6e6" opacity=".08"/>
+  <circle cx="44" cy="35" r="19" fill="#ef89c8" opacity=".07"/>
+  <g fill="#fff" filter="url(#soft-shadow)">
+    <text x="19" y="43" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="31" font-weight="800">V</text>
+    <text x="44" y="44" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="34" font-style="italic" font-weight="700">D</text>
+  </g>
+  <path d="M27.8 32h7.1" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" opacity=".88"/>
+  <circle cx="31.4" cy="32" r="1.35" fill="#fff"/>
+  <text class="wordmark" x="82" y="45" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="38" font-weight="700">VGGT-Diff</text>
+</svg>
