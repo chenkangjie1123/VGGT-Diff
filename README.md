@@ -1,14 +1,16 @@
 <div align="center">
 
-# VGGT-Diff
+<h1><img src="assets/vggtdiff-logo.svg" alt="VGGT-Diff logo" width="42" align="center"> VGGT-Diff</h1>
 
 ### Visual Geometry Meets Diffusion for Sparse-View Novel View Synthesis
 
-[Kangjie Chen](https://github.com/chenkangjie1123)<sup>1*</sup>&nbsp;&nbsp; [Xiangyu Li](https://github.com/chenkangjie1123/VGGT-Diff)<sup>1*</sup>&nbsp;&nbsp; [Dongbin Zhang](https://scholar.google.com/citations?user=U1cdnYUAAAAJ&hl=zh-CN)<sup>1</sup>&nbsp;&nbsp; [Chaoda Zheng](https://scholar.google.com/citations?user=3YuWG1QAAAAJ&hl=en)<sup>1</sup>&nbsp;&nbsp; [Shijia Chen](https://github.com/chenkangjie1123/VGGT-Diff)<sup>1</sup><br>
-[Jinhao Deng](https://scholar.google.com/citations?user=4lD_AkgAAAAJ&hl=en)<sup>1</sup>&nbsp;&nbsp; [Hongbin Lin](https://scholar.google.com/citations?user=LqX1k5QAAAAJ&hl=en)<sup>2</sup>&nbsp;&nbsp; [Choo Sin Wai](https://scholar.google.com/citations?hl=zh-CN&user=XM2n3scAAAAJ)<sup>3</sup>&nbsp;&nbsp; [Minqi Wang](https://github.com/chenkangjie1123/VGGT-Diff)<sup>2</sup>&nbsp;&nbsp; [Minghao Yang](https://github.com/chenkangjie1123/VGGT-Diff)<sup>3</sup><br>
-[Dake Zhong](https://github.com/chenkangjie1123/VGGT-Diff)<sup>3</sup>&nbsp;&nbsp; [Guorui Song](https://scholar.google.com/citations?user=qOOnZAoAAAAJ&hl=en)<sup>3</sup>&nbsp;&nbsp; [Yu Zhang](https://github.com/chenkangjie1123/VGGT-Diff)<sup>1</sup>&nbsp;&nbsp; [Xianming Liu](https://scholar.google.com/citations?user=697UEEIAAAAJ&hl=en)<sup>1</sup>&nbsp;&nbsp; [Boyang Wang](https://github.com/chenkangjie1123/VGGT-Diff)<sup>1&dagger;</sup>
+<sub>
+<a href="https://github.com/chenkangjie1123">Kangjie Chen</a><sup>1*</sup>&nbsp;&nbsp; <a href="https://github.com/chenkangjie1123/VGGT-Diff">Xiangyu Li</a><sup>1*</sup>&nbsp;&nbsp; <a href="https://scholar.google.com/citations?user=U1cdnYUAAAAJ&amp;hl=zh-CN">Dongbin Zhang</a><sup>1</sup>&nbsp;&nbsp; <a href="https://scholar.google.com/citations?user=3YuWG1QAAAAJ&amp;hl=en">Chaoda Zheng</a><sup>1</sup>&nbsp;&nbsp; <a href="https://github.com/chenkangjie1123/VGGT-Diff">Shijia Chen</a><sup>1</sup><br>
+<a href="https://scholar.google.com/citations?user=4lD_AkgAAAAJ&amp;hl=en">Jinhao Deng</a><sup>1</sup>&nbsp;&nbsp; <a href="https://scholar.google.com/citations?user=LqX1k5QAAAAJ&amp;hl=en">Hongbin Lin</a><sup>2</sup>&nbsp;&nbsp; <a href="https://scholar.google.com/citations?hl=zh-CN&amp;user=XM2n3scAAAAJ">Choo Sin Wai</a><sup>3</sup>&nbsp;&nbsp; <a href="https://github.com/chenkangjie1123/VGGT-Diff">Minqi Wang</a><sup>2</sup>&nbsp;&nbsp; <a href="https://github.com/chenkangjie1123/VGGT-Diff">Minghao Yang</a><sup>3</sup><br>
+<a href="https://github.com/chenkangjie1123/VGGT-Diff">Dake Zhong</a><sup>3</sup>&nbsp;&nbsp; <a href="https://scholar.google.com/citations?user=qOOnZAoAAAAJ&amp;hl=en">Guorui Song</a><sup>3</sup>&nbsp;&nbsp; <a href="https://github.com/chenkangjie1123/VGGT-Diff">Yu Zhang</a><sup>1</sup>&nbsp;&nbsp; <a href="https://scholar.google.com/citations?user=697UEEIAAAAJ&amp;hl=en">Xianming Liu</a><sup>1</sup>&nbsp;&nbsp; <a href="https://github.com/chenkangjie1123/VGGT-Diff">Boyang Wang</a><sup>1&dagger;</sup>
+</sub>
 
-<sup>1</sup> XPeng Motors&nbsp;&nbsp;&nbsp; <sup>2</sup> The Chinese University of Hong Kong&nbsp;&nbsp;&nbsp; <sup>3</sup> Tsinghua University
+<sub><sup>1</sup> XPeng Motors&nbsp;&nbsp;&nbsp; <sup>2</sup> The Chinese University of Hong Kong&nbsp;&nbsp;&nbsp; <sup>3</sup> Tsinghua University</sub>
 
 [![Project Page](https://img.shields.io/badge/Project-Page-176b86)](https://chenkangjie1123.github.io/VGGT-Diff/)
 [![Paper](https://img.shields.io/badge/Paper-PDF-8f236f)](https://chenkangjie1123.github.io/VGGT-Diff/VGGT-Diff.pdf)
