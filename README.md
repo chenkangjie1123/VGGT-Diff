@@ -48,10 +48,6 @@ hf download chenkangjie1123/VGGT-Diff-Trajectory-480x832 \
 
 Use `--training-mode nvs` with either NVS checkpoint. The trajectory checkpoint is the default model family for `scripts/infer.py` and `scripts/infer_pose_free.py`.
 
-## Overview
-
-[VGGT-Diff](https://chenkangjie1123.github.io/VGGT-Diff/) is a geometry-routed multi-view diffusion model for sparse-view novel view synthesis. It combines visual evidence from VGGT-Omega with a pretrained video diffusion prior. Given six sparse-view images, it jointly synthesizes a camera-controlled novel-view sequence while preserving observed structure and completing unseen content. This release contains the main training and inference paths, six-view visual conditioning, per-frame camera-trajectory conditioning, a ready-to-run garden example, and links to all released model checkpoints.
-
 ## Installation
 
 ```bash
