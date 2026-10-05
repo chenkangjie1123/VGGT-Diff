@@ -1,40 +1,56 @@
-<div align="center">
+<div align="left">
 
-<h1 align="center"><img src="assets/vggtdiff-wordmark.svg" alt="VGGT-Diff" height="58"></h1>
-
-### Visual Geometry Meets Diffusion for Sparse-View Novel View Synthesis
+<h3><strong>VGGT-Diff:</strong> <small>Visual Geometry Meets Diffusion for Sparse-View Novel View Synthesis</small></h3>
 
 <sub>
-<strong><a href="https://github.com/chenkangjie1123">Kangjie Chen</a></strong><sup>1*</sup>,&nbsp; <strong><a href="https://github.com/chenkangjie1123/VGGT-Diff">Xiangyu Li</a></strong><sup>1*</sup>,&nbsp; <strong><a href="https://scholar.google.com/citations?user=U1cdnYUAAAAJ&amp;hl=zh-CN">Dongbin Zhang</a></strong><sup>1</sup>,&nbsp; <strong><a href="https://scholar.google.com/citations?user=3YuWG1QAAAAJ&amp;hl=en">Chaoda Zheng</a></strong><sup>1</sup>,&nbsp; <strong><a href="https://github.com/chenkangjie1123/VGGT-Diff">Shijia Chen</a></strong><sup>1</sup>,&nbsp; <strong><a href="https://scholar.google.com/citations?user=4lD_AkgAAAAJ&amp;hl=en">Jinhao Deng</a></strong><sup>1</sup>,&nbsp; <strong><a href="https://scholar.google.com/citations?user=LqX1k5QAAAAJ&amp;hl=en">Hongbin Lin</a></strong><sup>2</sup>,&nbsp; <strong><a href="https://scholar.google.com/citations?hl=zh-CN&amp;user=XM2n3scAAAAJ">Choo Sin Wai</a></strong><sup>3</sup><br>
+<strong><a href="https://github.com/chenkangjie1123">Kangjie Chen</a></strong><sup>1*</sup>,&nbsp; <strong><a href="https://github.com/chenkangjie1123/VGGT-Diff">Xiangyu Li</a></strong><sup>1*</sup>,&nbsp; <strong><a href="https://scholar.google.com/citations?user=U1cdnYUAAAAJ&amp;hl=zh-CN">Dongbin Zhang</a></strong><sup>1</sup>,&nbsp; <strong><a href="https://scholar.google.com/citations?user=3YuWG1QAAAAJ&amp;hl=en">Chaoda Zheng</a></strong><sup>1</sup>,&nbsp; <strong><a href="https://github.com/chenkangjie1123/VGGT-Diff">Shijia Chen</a></strong><sup>1</sup>,&nbsp; <strong><a href="https://scholar.google.com/citations?user=4lD_AkgAAAAJ&amp;hl=en">Jinhao Deng</a></strong><sup>1</sup>,&nbsp; <strong><a href="https://scholar.google.com/citations?user=LqX1k5QAAAAJ&amp;hl=en">Hongbin Lin</a></strong><sup>2</sup>,&nbsp; <strong><a href="https://scholar.google.com/citations?hl=zh-CN&amp;user=XM2n3scAAAAJ">Choo Sin Wai</a></strong><sup>3</sup>&nbsp;
 <strong><a href="https://github.com/chenkangjie1123/VGGT-Diff">Minqi Wang</a></strong><sup>2</sup>,&nbsp; <strong><a href="https://github.com/chenkangjie1123/VGGT-Diff">Minghao Yang</a></strong><sup>3</sup>,&nbsp; <strong><a href="https://github.com/chenkangjie1123/VGGT-Diff">Dake Zhong</a></strong><sup>3</sup>,&nbsp; <strong><a href="https://scholar.google.com/citations?user=qOOnZAoAAAAJ&amp;hl=en">Guorui Song</a></strong><sup>3</sup>,&nbsp; <strong><a href="https://github.com/chenkangjie1123/VGGT-Diff">Yu Zhang</a></strong><sup>1</sup>,&nbsp; <strong><a href="https://scholar.google.com/citations?user=697UEEIAAAAJ&amp;hl=en">Xianming Liu</a></strong><sup>1</sup>,&nbsp; <strong><a href="https://github.com/chenkangjie1123/VGGT-Diff">Boyang Wang</a></strong><sup>1&dagger;</sup>
 </sub>
 
 <sub><strong><sup>1</sup> XPeng Motors&nbsp;&nbsp;&nbsp; <sup>2</sup> The Chinese University of Hong Kong&nbsp;&nbsp;&nbsp; <sup>3</sup> Tsinghua University</strong></sub>
 
-[![Project Page](https://img.shields.io/badge/Project-Page-176b86)](https://chenkangjie1123.github.io/VGGT-Diff/)
-[![Paper](https://img.shields.io/badge/Paper-PDF-8f236f)](https://chenkangjie1123.github.io/VGGT-Diff/VGGT-Diff.pdf)
-[![arXiv](https://img.shields.io/badge/arXiv-2609.33253-b31b1b)](https://arxiv.org/abs/2609.33253)
-[![Hugging Face Paper](https://img.shields.io/badge/Hugging_Face-Paper-f1b928)](https://huggingface.co/papers/2609.33253)
-[![YouTube Video](https://img.shields.io/badge/YouTube-Video-ff0000?logo=youtube&logoColor=white)](https://youtu.be/XkzSSh-ysKs)
+[![Project Page](https://img.shields.io/badge/Project-Page-385d6e?style=flat-square)](https://chenkangjie1123.github.io/VGGT-Diff/)
+[![Paper PDF](https://img.shields.io/badge/Paper-PDF-385d6e?style=flat-square)](https://chenkangjie1123.github.io/VGGT-Diff/VGGT-Diff.pdf)
+[![arXiv](https://img.shields.io/badge/arXiv-2609.33253-385d6e?style=flat-square)](https://arxiv.org/abs/2609.33253)
+[![Hugging Face](https://img.shields.io/badge/Hugging_Face-385d6e?style=flat-square)](https://huggingface.co/papers/2609.33253)
+[![Model Weights](https://img.shields.io/badge/Hugging_Face-Weights-385d6e?style=flat-square)](https://huggingface.co/chenkangjie1123/models?search=VGGT-Diff)
+[![YouTube Video](https://img.shields.io/badge/YouTube-Video-385d6e?style=flat-square)](https://youtu.be/XkzSSh-ysKs)
 
-<img src="assets/vggtdiff_demo_20cases.gif" alt="VGGT-Diff results on twenty evaluation trajectories" width="100%">
+<img src="assets/vggtdiff_demo_showcase.gif" alt="VGGT-Diff full-resolution novel-view synthesis across four scenes" width="100%">
+
+<sub>VGGT-Diff delivers strong novel-view synthesis across challenging in-domain and cross-domain viewpoints, outperforming existing generative NVS methods. Core model weights are now available on Hugging Face.</sub>
 
 </div>
 
-## Updates
+## News
 
+- 🎉 **October 5, 2026: All three core VGGT-Diff checkpoints are now available on Hugging Face!** Download the [100K half-resolution NVS model](https://huggingface.co/chenkangjie1123/VGGT-Diff-NVS-192x336-100K), the [full-resolution NVS model](https://huggingface.co/chenkangjie1123/VGGT-Diff-NVS-480x832), and the [full-resolution 80-frame trajectory model](https://huggingface.co/chenkangjie1123/VGGT-Diff-Trajectory-480x832). 🎉
 - **September 29, 2026:** The VGGT-Diff paper is now available on [arXiv](https://arxiv.org/abs/2609.33253). We also released the pose-free inference pipeline for generating camera-controlled videos directly from six RGB images.
 - **September 27, 2026:** We released the VGGT-Diff [paper](https://chenkangjie1123.github.io/VGGT-Diff/VGGT-Diff.pdf), [project page](https://chenkangjie1123.github.io/VGGT-Diff/), and code.
 
-## TODO
+## Model Zoo
 
-- [ ] Release half-resolution and full-resolution VGGT-Diff checkpoints.
-- [ ] Release the full-resolution checkpoint for continuous camera-trajectory generation.
-- [x] Release pose-free image-to-novel-view video inference from six RGB images.
+| Model | Task | Release setting | Download |
+| --- | --- | --- | --- |
+| **VGGT-Diff NVS 192x336 (100K)** | Independent-view NVS | DL3DV clean-10K; 100K effective steps | [Model card and weights](https://huggingface.co/chenkangjie1123/VGGT-Diff-NVS-192x336-100K) |
+| **VGGT-Diff NVS 480x832** | Full-resolution NVS used for the paper's baseline comparison | DL3DV clean-1K; ~18K half-resolution steps + 7,380 full-resolution steps | [Model card and weights](https://huggingface.co/chenkangjie1123/VGGT-Diff-NVS-480x832) |
+| **VGGT-Diff Trajectory 480x832 (36K)** | 80-frame continuous camera trajectories | Full-resolution trajectory adaptation | [Model card and weights](https://huggingface.co/chenkangjie1123/VGGT-Diff-Trajectory-480x832) |
+
+The repositories contain the trained VGGT-Diff DiT and conditioning weights. Wan2.1, VGGT-Omega, and other external model components remain separate dependencies and are not redistributed with these checkpoints.
+
+Download a checkpoint with the Hugging Face CLI, for example:
+
+```bash
+hf download chenkangjie1123/VGGT-Diff-Trajectory-480x832 \
+  vggt-diff.safetensors config.json LICENSE README.md \
+  --local-dir checkpoints/VGGT-Diff-Trajectory-480x832
+```
+
+Use `--training-mode nvs` with either NVS checkpoint. The trajectory checkpoint is the default model family for `scripts/infer.py` and `scripts/infer_pose_free.py`.
 
 ## Overview
 
-[VGGT-Diff](https://chenkangjie1123.github.io/VGGT-Diff/) is a geometry-routed multi-view diffusion model for sparse-view novel view synthesis. It combines visual evidence from VGGT-Omega with a pretrained video diffusion prior. Given six sparse-view images, it jointly synthesizes a camera-controlled novel-view sequence while preserving observed structure and completing unseen content. This release contains the main training and inference paths, six-view visual conditioning, per-frame camera-trajectory conditioning, and a ready-to-run garden example. Model checkpoints are not stored in this repository and will be released separately.
+[VGGT-Diff](https://chenkangjie1123.github.io/VGGT-Diff/) is a geometry-routed multi-view diffusion model for sparse-view novel view synthesis. It combines visual evidence from VGGT-Omega with a pretrained video diffusion prior. Given six sparse-view images, it jointly synthesizes a camera-controlled novel-view sequence while preserving observed structure and completing unseen content. This release contains the main training and inference paths, six-view visual conditioning, per-frame camera-trajectory conditioning, a ready-to-run garden example, and links to all released model checkpoints.
 
 ## Installation
 
@@ -45,6 +61,7 @@ cd VGGT-Diff
 conda create -n vggtdiff python=3.10 -y
 conda activate vggtdiff
 pip install -e .
+pip install -U huggingface_hub
 pip install git+https://github.com/facebookresearch/vggt-omega.git@399d4d62935deb71cedb1e1c35b7a90413a6bee4
 ```
 
@@ -56,11 +73,13 @@ The default example includes six source views and an 80-frame camera trajectory:
 
 ```bash
 python scripts/infer.py \
-  --checkpoint /path/to/vggtdiff.safetensors \
-  --omega-checkpoint /path/to/vggt_omega_1b_512.pt
+  --checkpoint checkpoints/VGGT-Diff-Trajectory-480x832/vggt-diff.safetensors \
+  --omega-checkpoint /path/to/vggt_omega_1b_512.pt \
+  --height 480 \
+  --width 832
 ```
 
-The generated frames and video are written to `outputs/garden/`. Full-resolution inference is enabled with `--height 480 --width 832`; the lower default resolution is convenient for a first run.
+The command above uses the released full-resolution trajectory checkpoint. The generated frames and video are written to `outputs/garden/`. Omit `--height 480 --width 832` to use the lower default resolution for a quicker first run.
 The default inference path uses CPU offloading to minimize CUDA memory use. On a GPU with ample memory, set `--vram-limit-gib 64` to keep more weights resident, or `--vram-limit-gib -1` to disable offloading.
 
 ### Inference from six RGB images without input poses
@@ -69,7 +88,7 @@ The pose-free entry point estimates the six source cameras with VGGT-Omega, then
 
 ```bash
 python scripts/infer_pose_free.py \
-  --checkpoint /path/to/full_resolution_vggtdiff.safetensors \
+  --checkpoint checkpoints/VGGT-Diff-Trajectory-480x832/vggt-diff.safetensors \
   --omega-checkpoint /path/to/vggt_omega_1b_512.pt \
   --source-dir /path/to/six_rgb_images \
   --output outputs/pose_free
@@ -96,7 +115,7 @@ my_scene/
 
 ```bash
 python scripts/infer.py \
-  --checkpoint /path/to/vggtdiff.safetensors \
+  --checkpoint checkpoints/VGGT-Diff-Trajectory-480x832/vggt-diff.safetensors \
   --omega-checkpoint /path/to/vggt_omega_1b_512.pt \
   --example /path/to/my_scene \
   --output outputs/my_scene
