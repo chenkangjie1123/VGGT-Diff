@@ -24,17 +24,17 @@
 
 ## News
 
-- 🎉 **October 5, 2026: All three core VGGT-Diff checkpoints are now available on Hugging Face!** Download the [100K half-resolution NVS model](https://huggingface.co/chenkangjie1123/VGGT-Diff-NVS-192x336-100K), the [full-resolution NVS model](https://huggingface.co/chenkangjie1123/VGGT-Diff-NVS-480x832), and the [full-resolution 80-frame trajectory model](https://huggingface.co/chenkangjie1123/VGGT-Diff-Trajectory-480x832). 🎉
-- **September 29, 2026:** The VGGT-Diff paper is now available on [arXiv](https://arxiv.org/abs/2609.33253). We also released the pose-free inference pipeline for generating camera-controlled videos directly from six RGB images.
-- **September 27, 2026:** We released the VGGT-Diff [paper](https://chenkangjie1123.github.io/VGGT-Diff/VGGT-Diff.pdf), [project page](https://chenkangjie1123.github.io/VGGT-Diff/), and code.
+- 🎉 **Oct. 5, 2026: Model weights released!** All three core checkpoints are now on [Hugging Face](https://huggingface.co/chenkangjie1123/models?search=VGGT-Diff). 🎉
+- **Sep. 29, 2026:** [arXiv paper](https://arxiv.org/abs/2609.33253) and pose-free inference released.
+- **Sep. 27, 2026:** [Paper](https://chenkangjie1123.github.io/VGGT-Diff/VGGT-Diff.pdf), [project page](https://chenkangjie1123.github.io/VGGT-Diff/), and code released.
 
 ## Model Zoo
 
-| Model | Task | Release setting | Download |
+| <small>Model</small> | <small>Task</small> | <small>Release setting</small> | <small>Download</small> |
 | --- | --- | --- | --- |
-| **VGGT-Diff NVS 192x336 (100K)** | Independent-view NVS | DL3DV clean-10K; 100K effective steps | [Model card and weights](https://huggingface.co/chenkangjie1123/VGGT-Diff-NVS-192x336-100K) |
-| **VGGT-Diff NVS 480x832** | Full-resolution NVS used for the paper's baseline comparison | DL3DV clean-1K; ~18K half-resolution steps + 7,380 full-resolution steps | [Model card and weights](https://huggingface.co/chenkangjie1123/VGGT-Diff-NVS-480x832) |
-| **VGGT-Diff Trajectory 480x832 (36K)** | 80-frame continuous camera trajectories | Full-resolution trajectory adaptation | [Model card and weights](https://huggingface.co/chenkangjie1123/VGGT-Diff-Trajectory-480x832) |
+| <small>**VGGT-Diff NVS 192x336 (100K)**</small> | <small>Independent-view NVS</small> | <small>DL3DV clean-10K; 100K effective steps</small> | <small>[Model card and weights](https://huggingface.co/chenkangjie1123/VGGT-Diff-NVS-192x336-100K)</small> |
+| <small>**VGGT-Diff NVS 480x832**</small> | <small>Full-resolution NVS used for the paper's baseline comparison</small> | <small>DL3DV clean-1K; ~18K half-resolution steps + 7,380 full-resolution steps</small> | <small>[Model card and weights](https://huggingface.co/chenkangjie1123/VGGT-Diff-NVS-480x832)</small> |
+| <small>**VGGT-Diff Trajectory 480x832 (36K)**</small> | <small>80-frame continuous camera trajectories</small> | <small>Full-resolution trajectory adaptation</small> | <small>[Model card and weights](https://huggingface.co/chenkangjie1123/VGGT-Diff-Trajectory-480x832)</small> |
 
 The repositories contain the trained VGGT-Diff DiT and conditioning weights. Wan2.1, VGGT-Omega, and other external model components remain separate dependencies and are not redistributed with these checkpoints.
 
@@ -47,10 +47,6 @@ hf download chenkangjie1123/VGGT-Diff-Trajectory-480x832 \
 ```
 
 Use `--training-mode nvs` with either NVS checkpoint. The trajectory checkpoint is the default model family for `scripts/infer.py` and `scripts/infer_pose_free.py`.
-
-## Overview
-
-[VGGT-Diff](https://chenkangjie1123.github.io/VGGT-Diff/) is a geometry-routed multi-view diffusion model for sparse-view novel view synthesis. It combines visual evidence from VGGT-Omega with a pretrained video diffusion prior. Given six sparse-view images, it jointly synthesizes a camera-controlled novel-view sequence while preserving observed structure and completing unseen content. This release contains the main training and inference paths, six-view visual conditioning, per-frame camera-trajectory conditioning, a ready-to-run garden example, and links to all released model checkpoints.
 
 ## Installation
 
@@ -69,7 +65,7 @@ Request access to the [VGGT-Omega checkpoint](https://huggingface.co/facebook/VG
 
 ## Inference
 
-The default example includes six source views and an 80-frame camera trajectory:
+The bundled example uses six source views, an 80-frame camera trajectory, and the released full-resolution trajectory checkpoint:
 
 ```bash
 python scripts/infer.py \
@@ -79,12 +75,11 @@ python scripts/infer.py \
   --width 832
 ```
 
-The command above uses the released full-resolution trajectory checkpoint. The generated frames and video are written to `outputs/garden/`. Omit `--height 480 --width 832` to use the lower default resolution for a quicker first run.
-The default inference path uses CPU offloading to minimize CUDA memory use. On a GPU with ample memory, set `--vram-limit-gib 64` to keep more weights resident, or `--vram-limit-gib -1` to disable offloading.
+Outputs are saved to `outputs/garden/`. Remove `--height 480 --width 832` for the lower, faster default resolution. CPU offloading is enabled by default; use `--vram-limit-gib 64` to retain more weights on a high-memory GPU or `--vram-limit-gib -1` to disable offloading.
 
-### Inference from six RGB images without input poses
+### Pose-free inference from six RGB images
 
-The pose-free entry point estimates the six source cameras with VGGT-Omega, then generates 80 novel-view frames with VGGT-Diff. It defaults to 480p (832 × 480), 12 fps, and a route through source views 0 → 1 → 2 → 3 → 4 → 5. Name the six input images in their physical walking order. The route interpolates camera centers and orientations; it does not check for collisions with scene geometry.
+VGGT-Omega first estimates the six source cameras, then VGGT-Diff generates 80 novel views. Defaults are 832 × 480, 12 fps, and route `0 → 1 → 2 → 3 → 4 → 5`; name inputs in physical walking order. The route interpolates camera centers and orientations without scene-collision checks.
 
 ```bash
 python scripts/infer_pose_free.py \
@@ -94,13 +89,18 @@ python scripts/infer_pose_free.py \
   --output outputs/pose_free
 ```
 
-The output contains `prediction.mp4`, `camera_trajectory.mp4`, a synchronized `prediction_with_trajectory.mp4`, all 80 PNG frames, and `cameras.json` with the estimated source cameras and the target path actually used. The camera view uses small antialiased frustums. No ground-truth poses or frames are read. You can reorder the default path with `--route-order 0 2 1 3 4 5`.
+No ground-truth poses or frames are read. Outputs are `prediction.mp4`, `camera_trajectory.mp4`, synchronized `prediction_with_trajectory.mp4`, 80 PNG frames, and `cameras.json` containing the estimated source cameras and target path used. Camera views use small antialiased frustums. Reorder the default path with `--route-order 0 2 1 3 4 5`.
 
-To provide your own 80 target cameras, pass `--trajectory-json /path/to/targets.json`. Give exactly one of `target_w2c` (OpenCV world-to-camera matrices in the VGGT-Omega-estimated world saved in `cameras.json`) or `target_c2w_relative_to_source0` (camera-to-world matrices in the first source camera's coordinate frame). Both are arrays of 80 homogeneous 4 × 4 matrices. Optional `target_intrinsics` is an array of 80 pixel-space 3 × 3 matrices; if omitted, the median of the six estimated source intrinsics is used. The custom path should avoid scene collisions and keep a sensible distance from the observed views.
+For a custom 80-camera path, pass `--trajectory-json /path/to/targets.json` with exactly one of:
+
+- `target_w2c`: 80 homogeneous 4 × 4 OpenCV world-to-camera matrices in the VGGT-Omega world saved in `cameras.json`.
+- `target_c2w_relative_to_source0`: 80 homogeneous 4 × 4 camera-to-world matrices relative to source camera 0.
+
+Optional `target_intrinsics` supplies 80 pixel-space 3 × 3 matrices; otherwise, the median of the six estimated source intrinsics is used. Keep custom paths collision-free and at a sensible distance from observed views.
 
 ### Custom scenes
 
-Create a directory with this layout:
+Use this layout:
 
 ```text
 my_scene/
@@ -111,7 +111,7 @@ my_scene/
 └── trajectory.json
 ```
 
-`trajectory.json` contains `source_w2c`, `target_w2c`, `source_intrinsics`, and `target_intrinsics`. Extrinsics use world-to-camera matrices in OpenCV convention; intrinsics are 3x3 pixel-space matrices at the source image resolution.
+`trajectory.json` contains `source_w2c`, `target_w2c`, `source_intrinsics`, and `target_intrinsics`. Extrinsics are OpenCV world-to-camera matrices; intrinsics are 3 × 3 pixel-space matrices at source-image resolution.
 
 ```bash
 python scripts/infer.py \
@@ -145,12 +145,10 @@ python scripts/prepare_omega_cache.py \
 
 Both recipes freeze the Wan2.1 VAE and VGGT-Omega while training the DiT and conditioning modules. Their latent layouts differ, so their checkpoints are separate model families.
 
-| | Paper NVS model | Continuous-trajectory model |
-| --- | --- | --- |
-| Targets | Variable `N`, treated as a set of views | 80 ordered, contiguous frames |
-| VAE | Every source and target is encoded independently | Sources are independent; targets use the causal temporal VAE |
-| DiT slots | `6 + N` | `6 + 21` for 80 targets |
-| Plucker conditioning | One pose per target slot | Four ordered poses packed per compressed slot |
+| <small>Recipe</small> | <small>Targets</small> | <small>Latent layout</small> | <small>Plucker poses</small> |
+| --- | --- | --- | --- |
+| <small>**Paper NVS**</small> | <small>Variable `N`-view set</small> | <small>Independent source/target encoding; `6 + N` slots</small> | <small>1 per target slot</small> |
+| <small>**Continuous trajectory**</small> | <small>80 ordered, contiguous frames</small> | <small>Independent sources; causal target VAE; `6 + 21` slots</small> | <small>4 ordered poses per compressed slot</small> |
 
 #### Paper NVS model
 
