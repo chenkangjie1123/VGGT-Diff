@@ -323,6 +323,16 @@ class WanVideoPipeline(BasePipeline):
             num_physical_output_frames = physical_targets
             if num_latent_frames is None:
                 num_latent_frames = source_frames + latent_targets
+        elif num_latent_frames is None and getattr(self.dit, "individual_encoding", False):
+            # NVS layout: individual encoding keeps one latent slot per physical
+            # frame, so the latent length is the full source + target frame count.
+            source_frames = len(input_image) if isinstance(input_image, list) else 1
+            physical_targets = int(
+                num_output_frames
+                if num_physical_output_frames is None
+                else num_physical_output_frames
+            )
+            num_latent_frames = source_frames + physical_targets
 
         # Inputs
         inputs_posi = {"prompt": prompt}
