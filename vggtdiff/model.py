@@ -198,10 +198,13 @@ class VGGTDiff:
         device: str = "cuda",
         dtype: torch.dtype = torch.bfloat16,
         vram_limit_gib: float | None = 0.0,
+        training_mode: str = "trajectory",
     ) -> None:
         if not torch.cuda.is_available():
             raise RuntimeError("VGGT-Diff inference requires a CUDA-compatible device")
-        validate_checkpoint(checkpoint)
+        validate_checkpoint(
+            checkpoint, require_temporal_adapter=training_mode == "trajectory"
+        )
         configs, tokenizer = _model_configs(base_model_dir)
         load_device = "cpu" if vram_limit_gib is not None else device
         self.pipe = WanVideoPipeline.from_pretrained(
@@ -211,7 +214,7 @@ class VGGTDiff:
             tokenizer_config=tokenizer,
             redirect_common_files=False,
         )
-        configure_dit(self.pipe.dit)
+        configure_dit(self.pipe.dit, training_mode=training_mode)
         state = load_state_dict(checkpoint, torch_dtype=dtype, device="cpu")
         result = self.pipe.dit.load_state_dict(state, strict=False)
         unexpected = list(result.unexpected_keys)
