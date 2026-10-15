@@ -24,6 +24,7 @@
 
 ## News
 
+- 🎉 **Oct. 15, 2026: Stronger full-resolution NVS checkpoint released!** Our new [480x832 scaling checkpoint](https://huggingface.co/chenkangjie1123/VGGT-Diff-NVS-480x832-100K-6K), trained with 100K half-resolution steps followed by 6K full-resolution steps, is now available on Hugging Face. 🎉
 - 🎉 **Oct. 5, 2026: Model weights released!** All three core checkpoints are now on [Hugging Face](https://huggingface.co/chenkangjie1123/models?search=VGGT-Diff). 🎉
 - **Sep. 29, 2026:** [arXiv paper](https://arxiv.org/abs/2609.33253) and pose-free inference released.
 - **Sep. 27, 2026:** [Paper](https://chenkangjie1123.github.io/VGGT-Diff/VGGT-Diff.pdf), [project page](https://chenkangjie1123.github.io/VGGT-Diff/), and code released.
@@ -33,6 +34,7 @@
 | <small>Model</small> | <small>Task</small> | <small>Release setting</small> | <small>Download</small> |
 | --- | --- | --- | --- |
 | <small>**VGGT-Diff NVS 192x336 (100K)**</small> | <small>Independent-view NVS</small> | <small>DL3DV clean-10K; 100K effective steps</small> | <small>[Model card and weights](https://huggingface.co/chenkangjie1123/VGGT-Diff-NVS-192x336-100K)</small> |
+| <small>**VGGT-Diff NVS 480x832 (100K + 6K)**</small> | <small>Full-resolution independent-view NVS</small> | <small>DL3DV clean-10K; 100K half-resolution steps + 6K full-resolution steps</small> | <small>[Model card and weights](https://huggingface.co/chenkangjie1123/VGGT-Diff-NVS-480x832-100K-6K)</small> |
 | <small>**VGGT-Diff NVS 480x832**</small> | <small>Full-resolution NVS used for the paper's baseline comparison</small> | <small>DL3DV clean-1K; ~18K half-resolution steps + 7,380 full-resolution steps</small> | <small>[Model card and weights](https://huggingface.co/chenkangjie1123/VGGT-Diff-NVS-480x832)</small> |
 | <small>**VGGT-Diff Trajectory 480x832 (36K)**</small> | <small>80-frame continuous camera trajectories</small> | <small>Full-resolution trajectory adaptation</small> | <small>[Model card and weights](https://huggingface.co/chenkangjie1123/VGGT-Diff-Trajectory-480x832)</small> |
 
