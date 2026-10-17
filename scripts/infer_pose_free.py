@@ -21,6 +21,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--omega-checkpoint", required=True)
     parser.add_argument("--base-model-dir", default=None)
     parser.add_argument(
+        "--training-mode", choices=("nvs", "trajectory"), default="trajectory",
+        help="Checkpoint family to load; use nvs for the NVS checkpoints",
+    )
+    parser.add_argument(
         "--source-dir", type=Path, default=Path("examples/garden/source_views")
     )
     parser.add_argument("--trajectory-json", type=Path, default=None)
@@ -73,6 +77,7 @@ def main() -> None:
         omega_checkpoint=args.omega_checkpoint,
         base_model_dir=args.base_model_dir,
         vram_limit_gib=None if args.vram_limit_gib < 0 else args.vram_limit_gib,
+        training_mode=args.training_mode,
     )
     predictions, cameras = model.generate_pose_free(
         images,
