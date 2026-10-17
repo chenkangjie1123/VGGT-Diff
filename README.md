@@ -10,7 +10,7 @@
 <sub><strong><sup>1</sup> XPeng Motors&nbsp;&nbsp;&nbsp; <sup>2</sup> The Chinese University of Hong Kong&nbsp;&nbsp;&nbsp; <sup>3</sup> Tsinghua University</strong></sub>
 
 [![Project Page](https://img.shields.io/badge/Project-Page-385d6e?style=flat-square)](https://chenkangjie1123.github.io/VGGT-Diff/)
-[![Paper PDF](https://img.shields.io/badge/Paper-PDF-385d6e?style=flat-square)](https://chenkangjie1123.github.io/VGGT-Diff/VGGT-Diff.pdf)
+[![Paper PDF](https://img.shields.io/badge/Paper-PDF-385d6e?style=flat-square)](https://chenkangjie1123.github.io/VGGT-Diff/VGGT-Diff.pdf?v=2)
 [![arXiv](https://img.shields.io/badge/arXiv-2609.33253-385d6e?style=flat-square)](https://arxiv.org/abs/2609.33253)
 [![Hugging Face](https://img.shields.io/badge/Hugging_Face-385d6e?style=flat-square)](https://huggingface.co/papers/2609.33253)
 [![Model Weights](https://img.shields.io/badge/Hugging_Face-Weights-385d6e?style=flat-square)](https://huggingface.co/chenkangjie1123/models?search=VGGT-Diff)
@@ -27,7 +27,7 @@
 - 🎉 **Oct. 15, 2026: Stronger full-resolution NVS checkpoint released!** Our new [480x832 scaling checkpoint](https://huggingface.co/chenkangjie1123/VGGT-Diff-NVS-480x832-100K-6K), trained with 100K half-resolution steps followed by 6K full-resolution steps, is now available on Hugging Face. 🎉
 - 🎉 **Oct. 5, 2026: Model weights released!** All three core checkpoints are now on [Hugging Face](https://huggingface.co/chenkangjie1123/models?search=VGGT-Diff). 🎉
 - **Sep. 29, 2026:** [arXiv paper](https://arxiv.org/abs/2609.33253) and pose-free inference released.
-- **Sep. 27, 2026:** [Paper](https://chenkangjie1123.github.io/VGGT-Diff/VGGT-Diff.pdf), [project page](https://chenkangjie1123.github.io/VGGT-Diff/), and code released.
+- **Sep. 27, 2026:** [Paper](https://chenkangjie1123.github.io/VGGT-Diff/VGGT-Diff.pdf?v=2), [project page](https://chenkangjie1123.github.io/VGGT-Diff/), and code released.
 
 ## Model Zoo
 
