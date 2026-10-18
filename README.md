@@ -77,7 +77,7 @@ python scripts/infer.py \
   --height 480 \
   --width 832 \
   --steps 50 \
-  --seed 20260906 \
+  --seed 20263012 \
   --fps 24 \
   --output outputs/garden
 ```
@@ -85,7 +85,7 @@ python scripts/infer.py \
 Outputs are saved to `outputs/garden/`. The model predicts 80 frames once and keeps those raw PNGs in `frames/`; `vggtdiff.mp4` appends the same frames in reverse order, producing a 160-frame, 24 fps forward-then-backward video without additional inference. Remove `--height 480 --width 832` for the lower, faster default resolution. CPU offloading is enabled by default; use `--vram-limit-gib 64` to retain more weights on a high-memory GPU or `--vram-limit-gib -1` to disable offloading.
 
 > [!NOTE]
-> `examples/garden` is a long 80-frame trajectory stress test. The default `--seed 20260906` is the verified reference sample; seed 42 can show substantially more drift in the later frames. The featured project-page film uses edited excerpts presented with the same forward-then-backward motion, rather than the complete raw trajectory. Later cameras with weaker six-view coverage can show blur, duplicated texture, or geometry drift. Compare runs with the same checkpoint, trajectory, seed, resolution, and 80 raw PNG frames; CPU offloading changes memory use and runtime, but is not expected to remove these artifacts.
+> The bundled Garden inputs and 80-camera path are the same scene used by the project-page trajectory demo. That demo used the effective-31K checkpoint and seed `20263012`; the released 36K successor uses the same protocol and produces a comparable trajectory. A repository revision published before October 18, 2026 accidentally paired the 832 x 480 PNGs with intrinsics still expressed at 336 x 192, which causes severe drift. Pull the latest revision before comparing results. CPU offloading changes memory use and runtime, not camera geometry or expected image content.
 
 ### Pose-free inference from six RGB images
 
@@ -121,7 +121,7 @@ my_scene/
 └── trajectory.json
 ```
 
-`trajectory.json` contains `source_w2c`, `target_w2c`, `source_intrinsics`, and `target_intrinsics`. Extrinsics are OpenCV world-to-camera matrices; intrinsics are 3 × 3 pixel-space matrices at source-image resolution.
+`trajectory.json` contains `source_w2c`, `target_w2c`, `source_intrinsics`, and `target_intrinsics`. Extrinsics are OpenCV world-to-camera matrices; intrinsics are 3 × 3 pixel-space matrices at source-image resolution. Add `intrinsics_image_size: [width, height]` to make the loader reject an accidental image/intrinsics resolution mismatch.
 
 ```bash
 python scripts/infer.py \

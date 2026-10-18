@@ -22,7 +22,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--height", type=int, default=192)
     parser.add_argument("--width", type=int, default=336)
     parser.add_argument("--steps", type=int, default=50)
-    parser.add_argument("--seed", type=int, default=20260906)
+    parser.add_argument("--seed", type=int, default=20263012)
     parser.add_argument("--fps", type=int, default=24)
     parser.add_argument(
         "--vram-limit-gib",
@@ -40,6 +40,15 @@ def main() -> None:
         raise ValueError(f"Expected six source images, found {len(source_paths)}")
     images = [Image.open(path).convert("RGB") for path in source_paths]
     trajectory = json.loads((args.example / "trajectory.json").read_text())
+    intrinsics_image_size = trajectory.get("intrinsics_image_size")
+    if intrinsics_image_size is not None:
+        expected_size = tuple(int(value) for value in intrinsics_image_size)
+        actual_size = images[0].size
+        if expected_size != actual_size:
+            raise ValueError(
+                "trajectory intrinsics use image size "
+                f"{expected_size}, but source images are {actual_size}"
+            )
     w2c = np.asarray(
         trajectory["source_w2c"] + trajectory["target_w2c"], dtype=np.float32
     )
