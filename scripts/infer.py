@@ -22,8 +22,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--height", type=int, default=192)
     parser.add_argument("--width", type=int, default=336)
     parser.add_argument("--steps", type=int, default=50)
-    parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--fps", type=int, default=12)
+    parser.add_argument("--seed", type=int, default=20260906)
+    parser.add_argument("--fps", type=int, default=24)
     parser.add_argument(
         "--vram-limit-gib",
         type=float,
@@ -67,9 +67,11 @@ def main() -> None:
     for index, image in enumerate(predictions):
         image.save(frame_dir / f"frame_{index:03d}.png")
     args.output.mkdir(parents=True, exist_ok=True)
+    forward_frames = [np.asarray(image) for image in predictions]
+    video_frames = forward_frames + forward_frames[::-1]
     imageio.mimsave(
         args.output / "vggtdiff.mp4",
-        [np.asarray(image) for image in predictions],
+        video_frames,
         fps=args.fps,
         codec="libx264",
         quality=8,

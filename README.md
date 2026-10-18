@@ -78,14 +78,14 @@ python scripts/infer.py \
   --width 832 \
   --steps 50 \
   --seed 20260906 \
-  --fps 12 \
+  --fps 24 \
   --output outputs/garden
 ```
 
-Outputs are saved to `outputs/garden/`. Remove `--height 480 --width 832` for the lower, faster default resolution. CPU offloading is enabled by default; use `--vram-limit-gib 64` to retain more weights on a high-memory GPU or `--vram-limit-gib -1` to disable offloading.
+Outputs are saved to `outputs/garden/`. The model predicts 80 frames once and keeps those raw PNGs in `frames/`; `vggtdiff.mp4` appends the same frames in reverse order, producing a 160-frame, 24 fps forward-then-backward video without additional inference. Remove `--height 480 --width 832` for the lower, faster default resolution. CPU offloading is enabled by default; use `--vram-limit-gib 64` to retain more weights on a high-memory GPU or `--vram-limit-gib -1` to disable offloading.
 
 > [!NOTE]
-> `examples/garden` is a long 80-frame trajectory stress test. Use `--seed 20260906` for the verified reference sample; seed 42 can show substantially more drift in the later frames. The featured project-page film uses a short edited excerpt from the well-observed portion, not the complete `vggtdiff.mp4`. Later cameras with weaker six-view coverage can show blur, duplicated texture, or geometry drift. Compare runs with the same checkpoint, trajectory, seed, resolution, and PNG frames; CPU offloading changes memory use and runtime, but is not expected to remove these artifacts.
+> `examples/garden` is a long 80-frame trajectory stress test. The default `--seed 20260906` is the verified reference sample; seed 42 can show substantially more drift in the later frames. The featured project-page film uses edited excerpts presented with the same forward-then-backward motion, rather than the complete raw trajectory. Later cameras with weaker six-view coverage can show blur, duplicated texture, or geometry drift. Compare runs with the same checkpoint, trajectory, seed, resolution, and 80 raw PNG frames; CPU offloading changes memory use and runtime, but is not expected to remove these artifacts.
 
 ### Pose-free inference from six RGB images
 
