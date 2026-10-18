@@ -63,7 +63,7 @@ pip install -U huggingface_hub
 pip install git+https://github.com/facebookresearch/vggt-omega.git@399d4d62935deb71cedb1e1c35b7a90413a6bee4
 ```
 
-Request access to the [VGGT-Omega checkpoint](https://huggingface.co/facebook/VGGT-Omega) and download `vggt_omega_1b_512.pt`. Wan2.1 weights are downloaded automatically on first use, or can be supplied through `--base-model-dir`.
+Request access to the [VGGT-Omega checkpoint](https://huggingface.co/facebook/VGGT-Omega) and download `vggt_omega_1b_512.pt`. Wan2.1 weights are downloaded automatically on first use, or can be supplied through `--base-model-dir`. A local model root should contain `Wan-AI/Wan2.1-I2V-14B-480P/` and `Wan-AI/Wan2.1-T2V-1.3B/google/umt5-xxl/`; pointing to the `Wan2.1-I2V-14B-480P` directory itself is also supported when the tokenizer is available in the adjacent `tokenizer/` tree.
 
 ## Inference
 
@@ -73,11 +73,19 @@ The bundled example uses six source views, an 80-frame camera trajectory, and th
 python scripts/infer.py \
   --checkpoint checkpoints/VGGT-Diff-Trajectory-480x832/vggt-diff.safetensors \
   --omega-checkpoint /path/to/vggt_omega_1b_512.pt \
+  --example examples/garden \
   --height 480 \
-  --width 832
+  --width 832 \
+  --steps 50 \
+  --seed 20260906 \
+  --fps 12 \
+  --output outputs/garden
 ```
 
 Outputs are saved to `outputs/garden/`. Remove `--height 480 --width 832` for the lower, faster default resolution. CPU offloading is enabled by default; use `--vram-limit-gib 64` to retain more weights on a high-memory GPU or `--vram-limit-gib -1` to disable offloading.
+
+> [!NOTE]
+> `examples/garden` is a long 80-frame trajectory stress test. Use `--seed 20260906` for the verified reference sample; seed 42 can show substantially more drift in the later frames. The featured project-page film uses a short edited excerpt from the well-observed portion, not the complete `vggtdiff.mp4`. Later cameras with weaker six-view coverage can show blur, duplicated texture, or geometry drift. Compare runs with the same checkpoint, trajectory, seed, resolution, and PNG frames; CPU offloading changes memory use and runtime, but is not expected to remove these artifacts.
 
 ### Pose-free inference from six RGB images
 
